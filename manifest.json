@@ -1,0 +1,32 @@
+{
+
+  "description": "",
+  "manifest_version": 2,
+  "name": "tabs-manager",
+  "version": "1.0",
+  "homepage_url": "https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/Your_second_WebExtension",
+  "icons": {
+    "48": "icons/icon-48.png"
+  },
+
+  "permissions": [
+    "activeTab",
+    "tabs"
+  ],
+
+  "browser_action": {
+    "default_icon": "icons/icon-32.png",
+    "theme_icons": [{
+        "light": "icons/icon-32-light.png",
+        "dark": "icons/icon-32.png",
+        "size": 32
+    }],
+    "default_title": "tabs-manager",
+    "default_popup": "popup/choose_beast.html"
+  },
+
+  "web_accessible_resources": [
+    "resources/*.jpg"
+  ]
+
+}
