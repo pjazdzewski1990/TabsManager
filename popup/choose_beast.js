@@ -75,24 +75,31 @@ function listenForClicks() {
         .then(reset)
         .catch(reportError);
     }
+  });
+}
 
-
-    ////////////////
-    ////////////////
+function setupTabsManager() {
     function appendTabs(tabs) {
-      const listElem = document.getElementById("popup-content");
+      const listElem = document.getElementById("tabs-list");
       tabs.forEach(tab => {
-        const newElem = document.createElement('div');
-        newElem.innerHTML = ("Tab: " + tab.title);
-        listElem.appendChild(newElem);
+        const newListElem = document.createElement('li');
+        const newLink = document.createElement('a');
+        newLink.textContent = ("Tab: " + tab.title + " # " + tab.id);
+//        newLink.href = tab.id;
+//        newListElem.innerHTML = ("Tab: " + tab.title);
+
+        newLink.setAttribute('href', ("../" + tab.id));
+//        newLink.setAttribute('href', tab.id);
+
+        newListElem.appendChild(newLink);
+        listElem.appendChild(newListElem);
       });
     }
 
     // get the tabs and append them
     const tabPromise = browser.tabs.query({currentWindow: true});
     tabPromise.then(appendTabs);
-  });
-}
+};
 
 /**
  * There was an error executing the script.
@@ -112,5 +119,5 @@ function reportExecuteScriptError(error) {
 browser.tabs
     .executeScript({file: "/content_scripts/beastify.js"})
     .then(listenForClicks)
+    .then(setupTabsManager)
     .catch(reportExecuteScriptError);
-console.log("tabs-manager started!")
