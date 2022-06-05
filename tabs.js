@@ -1,8 +1,8 @@
+// the 'main' of the application
 
-// get new tabs info
-function refreshTabsState() {
-  return browser.tabs.query({currentWindow: true});
-}
+import {refreshTabsState} from './db.js';
+import {clearList, listTabs} from './ui.js';
+import {debounce} from './utils.js';
 
 const storedTabsStateP = refreshTabsState();
 
@@ -20,38 +20,10 @@ function filterTabState(tabsStateP, stringQuery) {
     });
 };
 
-function clearList(listElem) {
-  while (listElem.firstChild) {
-    listElem.removeChild(listElem.lastChild);
-  }
-};
-
-function listTabs(tabsStateP, stringQuery) {
-  filterTabState(tabsStateP, stringQuery).then((tabs) => {
-    let tabsList = document.getElementById('tabs-list');
-    // clear list
-    clearList(tabsList);
-
-    let currentTabs = document.createDocumentFragment();
-    for (let tab of tabs) {
-        const tabLink = document.createElement('a');
-
-        tabLink.textContent = ("#" + tab.id + " " + tab.title);
-        tabLink.setAttribute('href', tab.id);
-        tabLink.classList.add('switch-tabs');
-
-        const newListElem = document.createElement('li');
-        newListElem.appendChild(tabLink);
-        currentTabs.appendChild(newListElem);
-    }
-    // fill list
-    tabsList.appendChild(currentTabs);
-  });
-};
-
 function render() {
     const stringQuery = document.getElementById("search-field").value;
-    listTabs(storedTabsStateP, stringQuery);
+    const tabsOfInterest = filterTabState(storedTabsStateP, stringQuery);
+    listTabs(tabsOfInterest);
 };
 
 document.addEventListener("DOMContentLoaded", render);
@@ -97,14 +69,6 @@ browser.tabs.onMoved.addListener((tabId, moveInfo) => {
 
 
 // handle search
-function debounce(callback, wait) {
-  let timeout;
-  return (...args) => {
-      clearTimeout(timeout);
-      timeout = setTimeout(function () { callback.apply(this, args); }, wait);
-  };
-};
-
 document.getElementById("search-field").addEventListener('keyup', debounce( () => {
     render();
 }, 1000));
