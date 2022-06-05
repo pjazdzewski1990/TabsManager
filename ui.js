@@ -11,7 +11,7 @@ export function listTabs(tabsStateP) {
     let tabsList = document.getElementById('tabs-list');
     // clear list
     clearList(tabsList);
-
+    // prepare elements
     let currentTabs = document.createDocumentFragment();
     for (let tab of tabs) {
         const tabLink = document.createElement('a');
@@ -24,7 +24,17 @@ export function listTabs(tabsStateP) {
         newListElem.appendChild(tabLink);
         currentTabs.appendChild(newListElem);
     }
+    // .. or a placeholder if empty
+    if(tabs.length === 0) {
+        appendEmptyPlaceholder(currentTabs);
+    }
     // fill list
     tabsList.appendChild(currentTabs);
   });
 };
+
+function appendEmptyPlaceholder(currentTabs) {
+    const newListElem = document.createElement('li');
+    newListElem.textContent = "Nothing found...";
+    currentTabs.appendChild(newListElem);
+}

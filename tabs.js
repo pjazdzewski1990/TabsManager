@@ -53,12 +53,6 @@ document.addEventListener("click", (e) => {
 // handle tabs change
 browser.tabs.onRemoved.addListener((tabId, removeInfo) => {
   console.log(`The tab with id: ${tabId}, is closing`);
-
-  if(removeInfo.isWindowClosing) {
-    console.log(`Its window is also closing.`);
-  } else {
-    console.log(`Its window is not closing`);
-  }
 });
 
 // handle tabs being moved
@@ -71,4 +65,4 @@ browser.tabs.onMoved.addListener((tabId, moveInfo) => {
 // handle search
 document.getElementById("search-field").addEventListener('keyup', debounce( () => {
     render();
-}, 1000));
+}, 750));
