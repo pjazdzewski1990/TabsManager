@@ -6,24 +6,28 @@ import {debounce} from './utils.js';
 
 const storedTabsStateP = refreshTabsState();
 
-function filterTabState(tabsStateP, stringQuery) {
+function filterTabState(tabs, stringQuery) {
     // input like "foo   BAR" becomes a "foo|bar" regexp
     const searchExpression = stringQuery.toLowerCase().replace(/\s+/g, "|");
 
-    return tabsStateP.then((tabs) => {
-        return tabs.filter((tab) => {
-            const searchContent = (tab.title).toLowerCase();
-            const wasFound = new RegExp(searchExpression).test(searchContent);
-            console.log("Testing " + searchContent + " for " + searchExpression + " => " + wasFound);
-            return wasFound;
-        });
+    return tabs.filter((tab) => {
+        const searchContent = (tab.title).toLowerCase();
+        const wasFound = new RegExp(searchExpression).test(searchContent);
+        console.log("Testing " + searchContent + " for " + searchExpression + " => " + wasFound);
+        return wasFound;
     });
+};
+
+function failureCallback(error) {
+    console.log("Render failed", error);
 };
 
 function render() {
     const stringQuery = document.getElementById("search-field").value;
-    const tabsOfInterest = filterTabState(storedTabsStateP, stringQuery);
-    listTabs(tabsOfInterest);
+    storedTabsStateP
+        .then(tabs => filterTabState(tabs, stringQuery))
+        .then(tabs => listTabs(tabs))
+        .catch(failureHandler);
 };
 
 document.addEventListener("DOMContentLoaded", render);

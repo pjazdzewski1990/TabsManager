@@ -6,8 +6,7 @@ export function clearList(listElem) {
   }
 };
 
-export function listTabs(tabsStateP) {
-  tabsStateP.then((tabs) => {
+export function listTabs(tabs) {
     let tabsList = document.getElementById('tabs-list');
     // clear list
     clearList(tabsList);
@@ -30,7 +29,7 @@ export function listTabs(tabsStateP) {
     }
     // fill list
     tabsList.appendChild(currentTabs);
-  });
+    return tabs;
 };
 
 function appendEmptyPlaceholder(currentTabs) {
