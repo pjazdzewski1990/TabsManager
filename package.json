@@ -1,0 +1,14 @@
+{
+  "name": "tabs-manager",
+  "version": "1.0.0",
+  "description": "Set of tools to help manage laaarge Firefox tab stacks",
+  "main": "background.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "author": "Patryk Jazdzewski",
+  "license": "ISC",
+  "devDependencies": {
+    "jest": "^28.1.1"
+  }
+}
