@@ -13,11 +13,13 @@ class Tab {
     }
 }
 
-// get new tabs info
-export function refreshTabsState() {
-  return browser.tabs.query({currentWindow: true}).then(tabs => {
-    return tabs.map(tab => {
-        return new Tab(tab.id, tab.title, tab.url);
-    });
-  });
-};
+export class FirefoxTabProvider {
+    // get new tabs info
+    provide() {
+        return browser.tabs.query({currentWindow: true}).then(tabs => {
+            return tabs.map(tab => {
+                return new Tab(tab.id, tab.title, tab.url);
+            });
+          });
+    }
+}

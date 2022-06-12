@@ -1,10 +1,11 @@
 // the 'main' of the application
 
-import {refreshTabsState} from './db.js';
+import {FirefoxTabProvider} from './model.js';
 import {clearList, listTabs} from './ui.js';
 import {debounce} from './utils.js';
 
-const storedTabsStateP = refreshTabsState();
+const tabsProvider = new FirefoxTabProvider();
+const storedTabsStateP = tabsProvider.provide();
 
 function filterTabState(tabs, stringQuery) {
     // input like "foo   BAR" becomes a "foo|bar" regexp
@@ -18,7 +19,7 @@ function filterTabState(tabs, stringQuery) {
     });
 };
 
-function failureCallback(error) {
+function failureHandler(error) {
     console.log("Render failed", error);
 };
 
