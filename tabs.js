@@ -69,4 +69,4 @@ browser.tabs.onMoved.addListener((tabId, moveInfo) => {
 // handle search
 document.getElementById("search-field").addEventListener('keyup', debounce( () => {
     render();
-}, 750));
+}, 500));
