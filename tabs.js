@@ -1,23 +1,11 @@
 // the 'main' of the application
 
-import {FirefoxTabProvider} from './model.js';
+import {FirefoxTabProvider, filterTabState} from './model.js';
 import {clearList, listTabs} from './ui.js';
 import {debounce} from './utils.js';
 
 const tabsProvider = new FirefoxTabProvider();
 const storedTabsStateP = tabsProvider.provide();
-
-function filterTabState(tabs, stringQuery) {
-    // input like "foo   BAR" becomes a "foo|bar" regexp
-    const searchExpression = stringQuery.toLowerCase().replace(/\s+/g, "|");
-
-    return tabs.filter((tab) => {
-        const searchContent = (tab.title).toLowerCase();
-        const wasFound = new RegExp(searchExpression).test(searchContent);
-        console.log("Testing " + searchContent + " for " + searchExpression + " => " + wasFound);
-        return wasFound;
-    });
-};
 
 function failureHandler(error) {
     console.log("Render failed", error);

@@ -23,3 +23,15 @@ export class FirefoxTabProvider {
           });
     }
 }
+
+export function filterTabState(tabs, stringQuery) {
+    // input like "foo   BAR" becomes a "foo|bar" regexp
+    const searchExpression = stringQuery.toLowerCase().replace(/\s+/g, "|");
+
+    return tabs.filter((tab) => {
+        const searchContent = (tab.title).toLowerCase();
+        const wasFound = new RegExp(searchExpression).test(searchContent);
+        console.log("Testing " + searchContent + " for " + searchExpression + " => " + wasFound);
+        return wasFound;
+    });
+};
