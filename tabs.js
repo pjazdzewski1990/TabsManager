@@ -1,8 +1,8 @@
 // the 'main' of the application
 
-import {FirefoxTabProvider, filterTabState} from './model.js';
-import {clearList, listTabs} from './ui.js';
-import {debounce} from './utils.js';
+import {FirefoxTabProvider, filterTabState} from './src/model.js';
+import {clearList, listTabs} from './src/ui.js';
+import {debounce} from './src/utils.js';
 
 const tabsProvider = new FirefoxTabProvider();
 const storedTabsStateP = tabsProvider.provide();

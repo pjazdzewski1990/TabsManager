@@ -1,4 +1,4 @@
-import {FirefoxTabProvider, filterTabState} from './../../model';
+import {FirefoxTabProvider, filterTabState} from './../../src/model';
 
 class TestTabProvider {
     constructor(_tabs) {
