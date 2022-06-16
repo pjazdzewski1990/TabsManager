@@ -9,3 +9,9 @@ export function debounce(callback, wait) {
       timeout = setTimeout(function () { callback.apply(this, args); }, wait);
   };
 };
+
+
+export function navigateToTabId(tabId) {
+    console.log("Navigating to tab", tabId);
+    browser.tabs.update(tabId, { active: true  });
+};

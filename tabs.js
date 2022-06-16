@@ -2,7 +2,7 @@
 
 import {FirefoxTabProvider, filterTabState} from './src/model.js';
 import {clearList, listTabs} from './src/ui.js';
-import {debounce} from './src/utils.js';
+import {debounce, navigateToTabId} from './src/utils.js';
 
 const tabsProvider = new FirefoxTabProvider();
 const storedTabsStateP = tabsProvider.provide();
@@ -16,7 +16,24 @@ function render() {
     storedTabsStateP
         .then(tabs => filterTabState(tabs, stringQuery))
         .then(tabs => listTabs(tabs))
+        .then(tabs => setFirstLinkNavigation(tabs))
         .catch(failureHandler);
+};
+
+let defaultNavigateHandler = () => {
+    console.log("Cannot navigate - no results found");
+};
+
+let navigateToFirstLink = defaultNavigateHandler;
+
+function setFirstLinkNavigation(tabs) {
+    if(tabs.length > 0) {
+        const firstTabId = tabs[0].id;
+        navigateToFirstLink = () => navigateToTabId(firstTabId);
+    } else {
+        navigateToFirstLink = defaultNavigateHandler;
+    }
+    return tabs;
 };
 
 document.addEventListener("DOMContentLoaded", render);
@@ -34,7 +51,7 @@ document.addEventListener("click", (e) => {
       for (var tab of tabs) {
         if (tab.id === tabId) {
           // make active
-          browser.tabs.update(tabId, { active: true  });
+          navigateToTabId(tabId);
         }
       }
     });
@@ -56,6 +73,11 @@ browser.tabs.onMoved.addListener((tabId, moveInfo) => {
 
 
 // handle search
-document.getElementById("search-field").addEventListener('keyup', debounce( () => {
-    render();
+document.getElementById("search-field").addEventListener('keyup', debounce( (evt) => {
+    console.log("Received:", evt.key);
+    if(evt.key === "ArrowUp") {
+        navigateToFirstLink();
+    } else {
+        render();
+    }
 }, 500));
