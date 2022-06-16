@@ -68,7 +68,6 @@ browser.tabs.onRemoved.addListener((tabId, removeInfo) => {
 // handle tabs being moved
 browser.tabs.onMoved.addListener((tabId, moveInfo) => {
   console.log(`Tab with id: ${tabId} moved from index: ${moveInfo.fromIndex} to index: ${moveInfo.toIndex}`);
-  //TODO: update state!
 });
 
 
