@@ -1,11 +1,12 @@
 // the 'main' of the application
 
-import {FirefoxTabProvider, filterTabState} from './src/model.js';
+import {FirefoxTabProvider, FirefoxAsyncTranslator, enrichTabState, filterTabState} from './src/model.js';
 import {clearList, listTabs} from './src/ui.js';
 import {debounce, navigateToTabId} from './src/utils.js';
 
 const tabsProvider = new FirefoxTabProvider();
 const storedTabsStateP = tabsProvider.provide();
+const tabsTranslator = new FirefoxAsyncTranslator();
 
 function failureHandler(error) {
     console.log("Render failed", error);
@@ -14,6 +15,7 @@ function failureHandler(error) {
 function render() {
     const stringQuery = document.getElementById("search-field").value;
     storedTabsStateP
+        .then(tabs => enrichTabState(tabs, tabsTranslator))
         .then(tabs => filterTabState(tabs, stringQuery))
         .then(tabs => listTabs(tabs))
         .then(tabs => setFirstLinkNavigation(tabs))
