@@ -13,3 +13,8 @@ html, body {
 #tabs-list {
     list-style-type: none;
 }
+
+.lang-icon {
+    width: 12px;
+    height:12px;
+}
