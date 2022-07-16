@@ -6,6 +6,25 @@ export function clearList(listElem) {
   }
 };
 
+// builds an Html from a language code (and special values that we use)
+function createLanguageIconHtml(languageCode) {
+    const langIcon = document.createElement('img');
+    langIcon.alt = languageCode;
+    // in case of trouble translating - assume en
+    // kudos to https://anandchowdhary.github.io/language-icons/
+    // and https://flagicons.lipis.dev/
+    let langLink = ("https://unpkg.com/language-icons/icons/" + languageCode + ".svg");
+    if(languageCode.toLowerCase() === "later") {
+        langLink = "https://raw.githubusercontent.com/lipis/flag-icons/main/flags/1x1/un.svg";
+    }
+    if(languageCode.toLowerCase() === "unknown") {
+        langLink = "https://raw.githubusercontent.com/lipis/flag-icons/main/flags/1x1/xx.svg";
+    }
+    langIcon.src = langLink;
+    langIcon.classList.add('lang-icon');
+    return langIcon;
+}
+
 export function listTabs(tabs) {
     let tabsList = document.getElementById('tabs-list');
     // clear list
@@ -13,20 +32,7 @@ export function listTabs(tabs) {
     // prepare elements
     let currentTabs = document.createDocumentFragment();
     for (let tab of tabs) {
-        const langIcon = document.createElement('img');
-        langIcon.alt = tab.languageCode;
-        // in case of trouble translating - assume en
-        // kudos to https://anandchowdhary.github.io/language-icons/
-        // and https://flagicons.lipis.dev/
-        let langLink = ("https://unpkg.com/language-icons/icons/" + tab.languageCode + ".svg");
-        if(tab.languageCode.toLowerCase() === "later") {
-            langLink = "https://raw.githubusercontent.com/lipis/flag-icons/main/flags/1x1/un.svg";
-        }
-        if(tab.languageCode.toLowerCase() === "unknown") {
-            langLink = "https://raw.githubusercontent.com/lipis/flag-icons/main/flags/1x1/xx.svg";
-        }
-        langIcon.src = langLink;
-        langIcon.classList.add('lang-icon');
+        const langIcon = createLanguageIconHtml(tab.languageCode);
 
         const tabLink = document.createElement('a');
         tabLink.textContent = ("#" + tab.id + " " + tab.title);
