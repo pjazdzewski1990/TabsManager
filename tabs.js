@@ -7,6 +7,8 @@ import {debounce, navigateToTabId} from './src/utils.js';
 const tabsProvider = new FirefoxTabProvider();
 const storedTabsStateP = tabsProvider.provide();
 const tabsTranslator = new FirefoxAsyncTranslator();
+// feed the translator from storage, so we don't need to ask everytime
+//tabsTranslator.hydrateAsync();
 
 function failureHandler(error) {
     console.log("Render failed", error);

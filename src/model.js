@@ -9,6 +9,7 @@ export class FirefoxTabProvider {
 
 export class FirefoxAsyncTranslator {
     tabTextToLanguageMap;
+
     constructor() {
         this.tabTextToLanguageMap = new Map();
     }
@@ -17,7 +18,7 @@ export class FirefoxAsyncTranslator {
     // returns the value immediately, without blocking
     // returns "UNKNOWN" if cannot detect the language
     // returns "LATER" if the detection process was started and the user should try again later
-    checkLanguageImmediately(textToDetectLanguageFrom) {
+    checkLanguageSync(textToDetectLanguageFrom) {
         if(this.tabTextToLanguageMap.has(textToDetectLanguageFrom)) {
             return this.tabTextToLanguageMap.get(textToDetectLanguageFrom);
         } else {
@@ -57,7 +58,7 @@ class EnrichedTab {
 // - language used
 export function enrichTabState(tabs, translator) {
     return tabs.map((tab) => {
-        const language = translator.checkLanguageImmediately(tab.title);
+        const language = translator.checkLanguageSync(tab.title);
         console.log("Enriching lang in " + tab.title + " => " + language);
         const enrichedTab = new EnrichedTab(tab.id, tab.title, tab.url, language);
         return enrichedTab;

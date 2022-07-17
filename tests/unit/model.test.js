@@ -29,8 +29,9 @@ test('filters tabs based on the title', () => {
     });
 });
 
+// dummy translator for testing
 class TestTranslator {
-    checkLanguageImmediately(text) {
+    checkLanguageSync(text) {
         const normalizedText = text.toLowerCase();
         if(normalizedText.indexOf("ś") > 0) {
             return "pl";
