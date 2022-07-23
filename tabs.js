@@ -1,23 +1,33 @@
 // the 'main' of the application
 
-import {FirefoxTabProvider, FirefoxAsyncTranslator, enrichTabState, filterTabState} from './src/model.js';
+import {FirefoxAsyncTranslator, FirefoxTabProvider, FirefoxTabStorage, enrichTabState, filterTabState} from './src/model.js';
 import {clearList, listTabs} from './src/ui.js';
 import {debounce, navigateToTabId} from './src/utils.js';
-
-const tabsProvider = new FirefoxTabProvider();
-const storedTabsStateP = tabsProvider.provide();
-const tabsTranslator = new FirefoxAsyncTranslator();
-// feed the translator from storage, so we don't need to ask everytime
-//tabsTranslator.hydrateAsync();
 
 function failureHandler(error) {
     console.log("Render failed", error);
 };
 
+function buildTranslatorAsync() {
+    const storage = new FirefoxTabStorage();
+    return storage
+        .getAsync()
+        .catch(error => {
+            // in case of a failure to access the storage we will just save the data
+            failureHandler(error);
+            return new Map();
+        })
+        .then(tabsData => new FirefoxAsyncTranslator(tabsData));
+}
+
+const tabsProvider = new FirefoxTabProvider();
+const storedTabsStateP = tabsProvider.provide();
+const tabsTranslatorP = buildTranslatorAsync();
+
 function render() {
     const stringQuery = document.getElementById("search-field").value;
     storedTabsStateP
-        .then(tabs => enrichTabState(tabs, tabsTranslator))
+        .then(tabs => tabsTranslatorP.then(tabsTranslator => enrichTabState(tabs, tabsTranslator)))
         .then(tabs => filterTabState(tabs, stringQuery))
         .then(tabs => listTabs(tabs))
         .then(tabs => setFirstLinkNavigation(tabs))

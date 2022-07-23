@@ -7,11 +7,35 @@ export class FirefoxTabProvider {
     }
 }
 
+export class FirefoxTabStorage {
+    fetchAllTabTranslations = "all-tab-translations";
+
+    getAsync() {
+        // returns an title -> language code map
+        const storedAsync = browser.storage.local.get(this.fetchAllTabTranslations);
+        return storedAsync.then(stored => new Map(Object.entries(stored)));
+    }
+
+    upsertAsync(capturedState) {
+        return this.getAsync()
+            //we merge the 2 states, where the new one overwrites the existing one
+            .then(storedState => new Map([...storedState, ...capturedState]))
+            .then(mergedState => {
+                const obj = {};
+                obj[this.fetchAllTabTranslations] = mergedState;
+                console.log("Upserting tabs information", obj);
+                return obj;
+            })
+            .then(mergedState => browser.storage.local.set(mergedState));
+    }
+}
+
 export class FirefoxAsyncTranslator {
+    // stores an title -> language code map
     tabTextToLanguageMap;
 
-    constructor() {
-        this.tabTextToLanguageMap = new Map();
+    constructor(storedState) {
+        this.tabTextToLanguageMap = storedState;
     }
 
     // given a text returns the language code, say: "Hello World" => "en"
@@ -19,6 +43,7 @@ export class FirefoxAsyncTranslator {
     // returns "UNKNOWN" if cannot detect the language
     // returns "LATER" if the detection process was started and the user should try again later
     checkLanguageSync(textToDetectLanguageFrom) {
+        console.log("checkLanguageSync", this.tabTextToLanguageMap);
         if(this.tabTextToLanguageMap.has(textToDetectLanguageFrom)) {
             return this.tabTextToLanguageMap.get(textToDetectLanguageFrom);
         } else {
