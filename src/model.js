@@ -46,13 +46,11 @@ export class FirefoxAsyncTranslator {
     // returns "UNKNOWN" if cannot detect the language
     // returns "LATER" if the detection process was started and the user should try again later
     checkLanguageSync(textToDetectLanguageFrom) {
-        console.log("checkLanguageSync", this.tabTextToLanguageMap);
         if(this.tabTextToLanguageMap.has(textToDetectLanguageFrom)) {
             return this.tabTextToLanguageMap.get(textToDetectLanguageFrom);
         } else {
             // start async process to update the cache
             const callback = (detectionObject) => {
-                console.log("Recognized " + textToDetectLanguageFrom, detectionObject.languages);
                 if(detectionObject.languages.length > 0) {
                     this.tabTextToLanguageMap.set(textToDetectLanguageFrom, detectionObject.languages[0].language);
                 } else {

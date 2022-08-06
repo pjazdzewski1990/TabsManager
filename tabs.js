@@ -4,6 +4,14 @@ import {FirefoxAsyncTranslator, FirefoxTabProvider, FirefoxTabStorage, enrichTab
 import {clearList, listTabs} from './src/ui.js';
 import {debounce, navigateToTabId} from './src/utils.js';
 
+var previousTimestamp = 0;
+function tagTime(data) {
+    const currentTimestamp = +new Date()
+    console.log("@" + currentTimestamp + " since last timestamp: " + (currentTimestamp-previousTimestamp) + "ms");
+    previousTimestamp = currentTimestamp;
+    return data;
+}
+
 function failureHandler(error) {
     console.log("Render failed", error);
 };
@@ -28,10 +36,12 @@ const tabsTranslatorP = buildTranslatorAsync();
 function render() {
     const stringQuery = document.getElementById("search-field").value;
     storedTabsStateP
+        .then(tagTime)
         .then(tabs => tabsTranslatorP.then(tabsTranslator => enrichTabState(tabs, tabsTranslator)))
         .then(tabs => filterTabState(tabs, stringQuery))
         .then(tabs => listTabs(tabs))
         .then(tabs => setFirstLinkNavigation(tabs))
+        .then(tagTime)
         .catch(failureHandler);
 };
 
