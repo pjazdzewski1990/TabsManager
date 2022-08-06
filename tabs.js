@@ -8,8 +8,9 @@ function failureHandler(error) {
     console.log("Render failed", error);
 };
 
+const storage = new FirefoxTabStorage();
+
 function buildTranslatorAsync() {
-    const storage = new FirefoxTabStorage();
     return storage
         .getAsync()
         .catch(error => {
@@ -50,6 +51,7 @@ function setFirstLinkNavigation(tabs) {
     return tabs;
 };
 
+// display UI when user clicks on the button
 document.addEventListener("DOMContentLoaded", render);
 
 // handle clicks
@@ -94,3 +96,8 @@ document.getElementById("search-field").addEventListener('keyup', debounce( (evt
         render();
     }
 }, 500));
+
+// save data for later every X seconds
+window.setTimeout(() => {
+    tabsTranslatorP.then(translator => storage.upsertAsync(translator.tabTextToLanguageMap));
+}, 5000);

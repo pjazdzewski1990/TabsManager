@@ -13,7 +13,10 @@ export class FirefoxTabStorage {
     getAsync() {
         // returns an title -> language code map
         const storedAsync = browser.storage.local.get(this.fetchAllTabTranslations);
-        return storedAsync.then(stored => new Map(Object.entries(stored)));
+        return storedAsync.then(stored => {
+            console.log("Read tabs information", stored);
+            return stored["all-tab-translations"];
+        })
     }
 
     upsertAsync(capturedState) {
