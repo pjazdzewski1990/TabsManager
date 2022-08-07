@@ -25,6 +25,13 @@
     "storage",
     "tabs"
   ],
+  "commands": {
+    "_execute_browser_action": {
+      "suggested_key": {
+        "default": "Ctrl+Shift+U"
+      }
+    }
+  },
   "web_accessible_resources": [
     "resources/*.jpg"
   ],
