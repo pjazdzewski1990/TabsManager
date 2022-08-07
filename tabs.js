@@ -4,9 +4,9 @@ import {FirefoxAsyncTranslator, FirefoxTabProvider, FirefoxTabStorage, enrichTab
 import {clearList, listTabs} from './src/ui.js';
 import {debounce, navigateToTabId} from './src/utils.js';
 
-var previousTimestamp = 0;
+var previousTimestamp = +new Date();
 function tagTime(data) {
-    const currentTimestamp = +new Date()
+    const currentTimestamp = +new Date();
     console.log("@" + currentTimestamp + " since last timestamp: " + (currentTimestamp-previousTimestamp) + "ms");
     previousTimestamp = currentTimestamp;
     return data;
@@ -107,7 +107,7 @@ document.getElementById("search-field").addEventListener('keyup', debounce( (evt
     }
 }, 500));
 
-// save data for later every X seconds
+// save data for later after X seconds
 window.setTimeout(() => {
     tabsTranslatorP.then(translator => storage.upsertAsync(translator.tabTextToLanguageMap));
 }, 5000);
