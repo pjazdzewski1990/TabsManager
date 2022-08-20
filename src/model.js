@@ -23,16 +23,19 @@ export class FirefoxTabStorage {
         });
     }
 
+    //TODO: SETUP linter/formatter
+    #prepareStorageObject(storedState, capturedState) {
+        const mergedState = new Map([...storedState, ...capturedState]);
+        const obj = {};
+        obj[this.fetchAllTabTranslations] = mergedState;
+        console.log("Upserting tabs information", obj);
+        return obj;
+    }
+
     upsertAsync(capturedState) {
         return this.getAsync()
             //we merge the 2 states, where the new one overwrites the existing one
-            .then(storedState => new Map([...storedState, ...capturedState]))
-            .then(mergedState => {
-                const obj = {};
-                obj[this.fetchAllTabTranslations] = mergedState;
-                console.log("Upserting tabs information", obj);
-                return obj;
-            })
+            .then(storedState => this.#prepareStorageObject(storedState, capturedState))
             .then(mergedState => browser.storage.local.set(mergedState));
     }
 }

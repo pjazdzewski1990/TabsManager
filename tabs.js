@@ -18,7 +18,7 @@ function failureHandler(error) {
 
 const storage = new FirefoxTabStorage();
 
-function buildTranslatorAsync() {
+function buildTranslatorAsync(storage) {
     return storage
         .getAsync()
         .catch(error => {
@@ -31,7 +31,7 @@ function buildTranslatorAsync() {
 
 const tabsProvider = new FirefoxTabProvider();
 const storedTabsStateP = tabsProvider.provide();
-const tabsTranslatorP = buildTranslatorAsync();
+const tabsTranslatorP = buildTranslatorAsync(storage);
 
 function render() {
     const stringQuery = document.getElementById("search-field").value;
