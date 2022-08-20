@@ -104,7 +104,7 @@ browser.tabs.onMoved.addListener((tabId, moveInfo) => {
 // handle search
 document.getElementById("search-field").addEventListener('keyup', debounce( (evt) => {
     console.log("Received:", evt.key);
-    if(evt.key === "ArrowUp") {
+    if(evt.key === "ArrowDown") {
         navigateToFirstLink();
     } else {
         renderUI();
