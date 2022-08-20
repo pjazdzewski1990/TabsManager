@@ -15,3 +15,9 @@ export function navigateToTabId(tabId) {
     console.log("Navigating to tab", tabId);
     browser.tabs.update(tabId, { active: true  });
 };
+
+export function runAfterDelay(milliSecondDelay) {
+  return new Promise(resolve => {
+    window.setTimeout(resolve, milliSecondDelay);
+  });
+}

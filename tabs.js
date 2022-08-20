@@ -2,7 +2,7 @@
 
 import {FirefoxAsyncTranslator, FirefoxTabProvider, FirefoxTabStorage, enrichTabState, filterTabState} from './src/model.js';
 import {clearList, listTabs} from './src/ui.js';
-import {debounce, navigateToTabId} from './src/utils.js';
+import {debounce, navigateToTabId, runAfterDelay} from './src/utils.js';
 
 var previousTimestamp = +new Date();
 function tagTime(data) {
@@ -33,9 +33,9 @@ const tabsProvider = new FirefoxTabProvider();
 const storedTabsStateP = tabsProvider.provide();
 const tabsTranslatorP = buildTranslatorAsync(storage);
 
-function render() {
+function renderUI() {
     const stringQuery = document.getElementById("search-field").value;
-    storedTabsStateP
+    return storedTabsStateP
         .then(tagTime)
         .then(tabs => tabsTranslatorP.then(tabsTranslator => enrichTabState(tabs, tabsTranslator)))
         .then(tabs => filterTabState(tabs, stringQuery))
@@ -61,8 +61,12 @@ function setFirstLinkNavigation(tabs) {
     return tabs;
 };
 
-// display UI when user clicks on the button
-document.addEventListener("DOMContentLoaded", render);
+function storeUIState() {
+    // save data for later after X seconds
+    return runAfterDelay(5000)
+        .then(() => tabsTranslatorP)
+        .then(translator => storage.upsertAsync(translator.tabTextToLanguageMap));
+}
 
 // handle clicks
 document.addEventListener("click", (e) => {
@@ -103,11 +107,9 @@ document.getElementById("search-field").addEventListener('keyup', debounce( (evt
     if(evt.key === "ArrowUp") {
         navigateToFirstLink();
     } else {
-        render();
+        renderUI();
     }
 }, 500));
 
-// save data for later after X seconds
-window.setTimeout(() => {
-    tabsTranslatorP.then(translator => storage.upsertAsync(translator.tabTextToLanguageMap));
-}, 5000);
+// display UI when user clicks on the button
+document.addEventListener("DOMContentLoaded", () => renderUI().then(storeUIState));

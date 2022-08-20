@@ -66,19 +66,4 @@ test('detect language in tabs', () => {
     ]);
 });
 
-test('saves and reads stored tab translations', () => {
-    //given some tabs
-    const tabsUnderTest = [
-        {id: 1, title: "Test1", url: "http://example.com/1"},
-        {id: 2, title: "Test2", url: "http://example.com/2"},
-        {id: 3, title: "Test3", url: "http://example.com/3"}
-    ];
-    const provider = new TestTabProvider(tabsUnderTest);
-    //when we filter by Test
-    const resultPromise = provider.provide().then(tabs => filterTabState(tabs, "Test"));
-    //then we expect the results to be filtered by title
-    return resultPromise.then(result => {
-        expect(result.length).toEqual(4);
-        expect(result.map(t => t.id)).toEqual([1,2,3,4]);
-    });
-});
+//TODO: find a way to test FF APIs as mocking everything is not viable in the the long run

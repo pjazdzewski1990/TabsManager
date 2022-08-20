@@ -24,6 +24,7 @@ export class FirefoxTabStorage {
     }
 
     //TODO: SETUP linter/formatter
+    //we merge the 2 states, where the new one overwrites the existing one
     #prepareStorageObject(storedState, capturedState) {
         const mergedState = new Map([...storedState, ...capturedState]);
         const obj = {};
@@ -34,7 +35,6 @@ export class FirefoxTabStorage {
 
     upsertAsync(capturedState) {
         return this.getAsync()
-            //we merge the 2 states, where the new one overwrites the existing one
             .then(storedState => this.#prepareStorageObject(storedState, capturedState))
             .then(mergedState => browser.storage.local.set(mergedState));
     }
