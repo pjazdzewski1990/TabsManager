@@ -45,6 +45,14 @@ function renderUI() {
         .catch(failureHandler);
 };
 
+function storeUIState() {
+    // save data for later after X seconds
+    return runAfterDelay(5000)
+        .then(() => tabsTranslatorP)
+        .then(translator => storage.upsertAsync(translator.tabTextToLanguageMap));
+}
+
+// handle clicks
 let defaultNavigateHandler = () => {
     console.log("Cannot navigate - no results found");
 };
@@ -61,14 +69,6 @@ function setFirstLinkNavigation(tabs) {
     return tabs;
 };
 
-function storeUIState() {
-    // save data for later after X seconds
-    return runAfterDelay(5000)
-        .then(() => tabsTranslatorP)
-        .then(translator => storage.upsertAsync(translator.tabTextToLanguageMap));
-}
-
-// handle clicks
 document.addEventListener("click", (e) => {
   // we cannot navigate with a simple href... this is the fix
   if (e.target.classList.contains('switch-tabs')) {
@@ -90,17 +90,6 @@ document.addEventListener("click", (e) => {
   e.preventDefault();
 });
 
-// handle tabs change
-browser.tabs.onRemoved.addListener((tabId, removeInfo) => {
-  console.log(`The tab with id: ${tabId}, is closing`);
-});
-
-// handle tabs being moved
-browser.tabs.onMoved.addListener((tabId, moveInfo) => {
-  console.log(`Tab with id: ${tabId} moved from index: ${moveInfo.fromIndex} to index: ${moveInfo.toIndex}`);
-});
-
-
 // handle search
 document.getElementById("search-field").addEventListener('keyup', debounce( (evt) => {
     console.log("Received:", evt.key);
@@ -109,7 +98,7 @@ document.getElementById("search-field").addEventListener('keyup', debounce( (evt
     } else {
         renderUI();
     }
-}, 500));
+}, 350));
 
 // display UI when user clicks on the button
 document.addEventListener("DOMContentLoaded", () => renderUI().then(storeUIState));
