@@ -23,7 +23,7 @@ export class FirefoxTabStorage {
         });
     }
 
-    //TODO: SETUP linter/formatter
+    //TODO: add a  linter/formatter
     //we merge the 2 states, where the new one overwrites the existing one
     #prepareStorageObject(storedState, capturedState) {
         const mergedState = new Map([...storedState, ...capturedState]);
@@ -34,10 +34,16 @@ export class FirefoxTabStorage {
     }
 
     upsertAsync(capturedState) {
+        //TODO: should there be an upper bound on the pages count?
         return this.getAsync()
             .then(storedState => this.#prepareStorageObject(storedState, capturedState))
-            .then(mergedState => browser.storage.local.set(mergedState));
+            .then(mergedState => browser.storage.local.set(mergedState)); //TODO: we don't need all the keys if we would flatten???
     }
+}
+
+const lastClosedTabStorageKey = "lastClosedTabId";
+export function getLastClosedTabAsync() {
+    return browser.storage.local.get(lastClosedTabStorageKey);
 }
 
 export class FirefoxAsyncTranslator {

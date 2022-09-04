@@ -1,6 +1,6 @@
 // the 'main' of the application
 
-import {FirefoxAsyncTranslator, FirefoxTabProvider, FirefoxTabStorage, enrichTabState, filterTabState} from './src/model.js';
+import {getLastClosedTabAsync, FirefoxAsyncTranslator, FirefoxTabProvider, FirefoxTabStorage, enrichTabState, filterTabState} from './src/model.js';
 import {clearList, listTabs} from './src/ui.js';
 import {debounce, navigateToTabId, runAfterDelay} from './src/utils.js';
 
@@ -34,6 +34,10 @@ const storedTabsStateP = tabsProvider.provide();
 const tabsTranslatorP = buildTranslatorAsync(storage);
 
 function renderUI() {
+    getLastClosedTabAsync().then((saved) => {
+        console.log("Read storage state:", saved);
+    });
+
     const stringQuery = document.getElementById("search-field").value;
     return storedTabsStateP
         .then(tagTime)
