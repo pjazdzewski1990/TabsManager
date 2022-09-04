@@ -41,7 +41,7 @@ export class FirefoxTabStorage {
     }
 }
 
-const lastClosedTabStorageKey = "lastClosedTabId";
+const lastClosedTabStorageKey = "lastClosedTab";
 export function getLastClosedTabAsync() {
     return browser.storage.local.get(lastClosedTabStorageKey);
 }

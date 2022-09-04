@@ -2,12 +2,12 @@
 // https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/Background_scripts
 //import {setLastClosedTabAsync} from './src/model.js';
 // as a workaround I copy the setting code here, rather than sharing it
-const lastClosedTabStorageKey = "lastClosedTabId";
-function setLastClosedTabAsync(tabId) {
+const lastClosedTabStorageKey = "lastClosedTab";
+function setLastClosedTabAsync(tab) {
     //TODO: should we store the last X rather than 1?
-    const lastClosedTabIdObj = {};
-    lastClosedTabIdObj[lastClosedTabStorageKey] = tabId;
-    return browser.storage.local.set(lastClosedTabIdObj);
+    const lastClosedTabObj = {};
+    lastClosedTabObj[lastClosedTabStorageKey] = tab;
+    return browser.storage.local.set(lastClosedTabObj);
 }
 
 // manage the badge UI
@@ -34,7 +34,15 @@ browser.tabs.onRemoved.addListener((tabId) => {
 
     // update the information on the last closed tab
     // this information is stored in the local storage of the app, so we can retrieve it later and in other parts of the app
-    setLastClosedTabAsync(tabId);
+    // FF doesn't make it particularly easy - we need to access the storage to get it out
+    const saveP = browser.tabs.query({currentWindow: true})
+        .then((tabs) => {
+            const beingClosed = tabs.filter(tab => tab.id === tabId);
+            return beingClosed;
+        })
+        .then((tabs) => (tabs.length > 0)? tabs[0].title : "")
+        .then((tab) => setLastClosedTabAsync(tab));
+    return saveP;
 });
 
 browser.tabs.onCreated.addListener((tabId) => {

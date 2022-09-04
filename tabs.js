@@ -35,7 +35,7 @@ const tabsTranslatorP = buildTranslatorAsync(storage);
 
 function renderUI() {
     getLastClosedTabAsync().then((saved) => {
-        console.log("Read storage state:", saved);
+        console.log("Last closed tab was:", saved);
     });
 
     const stringQuery = document.getElementById("search-field").value;
