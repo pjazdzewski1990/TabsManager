@@ -1,7 +1,7 @@
 // the 'main' of the application
 
 import {getLastClosedTabAsync, FirefoxAsyncTranslator, FirefoxTabProvider, FirefoxTabStorage, enrichTabState, filterTabState} from './src/model.js';
-import {clearList, listTabs} from './src/ui.js';
+import {clearList, listTabs, showSimilarTab} from './src/ui.js';
 import {debounce, navigateToTabId, runAfterDelay} from './src/utils.js';
 
 var previousTimestamp = +new Date();
@@ -34,19 +34,31 @@ const storedTabsStateP = tabsProvider.provide();
 const tabsTranslatorP = buildTranslatorAsync(storage);
 
 function renderUI() {
-    getLastClosedTabAsync().then((saved) => {
-        console.log("Last closed tab was:", saved);
-    });
-
     const stringQuery = document.getElementById("search-field").value;
-    return storedTabsStateP
-        .then(tagTime)
+
+    const _storedTabsStateP = storedTabsStateP.then(tagTime);
+
+    const similarToLastP = Promise.all([_storedTabsStateP, getLastClosedTabAsync()])
+        .then((tabsAndLastClosed) => {
+            const saved = tabsAndLastClosed[0];
+            //TODO: move it to service?
+            const lastClosed = tabsAndLastClosed[1]["lastClosedTab"];
+            console.log("Last closed tab was:", lastClosed);
+            //TODO: pick the right tab!
+            return saved[0];
+        })
+        .then((mostSimilarTab) => showSimilarTab(mostSimilarTab))
+        .catch(failureHandler);
+
+    const listRenderP = _storedTabsStateP
         .then(tabs => tabsTranslatorP.then(tabsTranslator => enrichTabState(tabs, tabsTranslator)))
         .then(tabs => filterTabState(tabs, stringQuery))
         .then(tabs => listTabs(tabs))
         .then(tabs => setFirstLinkNavigation(tabs))
         .then(tagTime)
         .catch(failureHandler);
+
+    return Promise.all([similarToLastP, listRenderP]);
 };
 
 function storeUIState() {
@@ -96,7 +108,6 @@ document.addEventListener("click", (e) => {
 
 // handle search
 document.getElementById("search-field").addEventListener('keyup', debounce( (evt) => {
-    console.log("Received:", evt.key);
     if(evt.key === "ArrowDown") {
         navigateToFirstLink();
     } else {

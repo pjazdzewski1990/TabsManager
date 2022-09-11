@@ -98,7 +98,7 @@ class EnrichedTab {
 export function enrichTabState(tabs, translator) {
     return tabs.map((tab) => {
         const language = translator.checkLanguageSync(tab.title);
-        console.log("Enriching lang in " + tab.title + " => " + language);
+//        console.log("Enriching lang in " + tab.title + " => " + language);
         const enrichedTab = new EnrichedTab(tab.id, tab.title, tab.url, language);
         return enrichedTab;
     });
@@ -116,7 +116,7 @@ export function filterTabState(tabs, stringQuery) {
     return tabs.filter((tab) => {
         const searchContent = tabToSearchString(tab);
         const wasFound = new RegExp(searchExpression).test(searchContent);
-        console.log("Testing " + searchContent + " for " + searchExpression + " => " + wasFound);
+//        console.log("Testing " + searchContent + " for " + searchExpression + " => " + wasFound);
         return wasFound;
     });
 };

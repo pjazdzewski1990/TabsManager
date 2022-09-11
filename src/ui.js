@@ -53,6 +53,22 @@ export function listTabs(tabs) {
     return tabs;
 };
 
+export function showSimilarTab(tab) {
+    console.log("showSimilarTab", tab);
+    let tabsElem = document.getElementById('similar-tab');
+    // clear list
+    clearList(tabsElem);
+
+    const tabLink = document.createElement('a');
+    tabLink.textContent = ("#" + tab.id + " " + tab.title);
+    tabLink.setAttribute('href', tab.id);
+    tabLink.classList.add('switch-tabs');
+
+    // fill list
+    tabsElem.appendChild(tabLink);
+    return tab;
+};
+
 function appendEmptyPlaceholder(currentTabs) {
     const newListElem = document.createElement('li');
     newListElem.textContent = "Nothing found...";

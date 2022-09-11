@@ -40,7 +40,8 @@ browser.tabs.onRemoved.addListener((tabId) => {
             const beingClosed = tabs.filter(tab => tab.id === tabId);
             return beingClosed;
         })
-        .then((tabs) => (tabs.length > 0)? tabs[0].title : "")
+        // we save the full tab object in case something is needed
+        .then((tabs) => (tabs.length > 0)? {...tabs[0]} : {})
         .then((tab) => setLastClosedTabAsync(tab));
     return saveP;
 });
