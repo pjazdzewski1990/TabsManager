@@ -39,7 +39,7 @@ function renderUI() {
     const _storedTabsStateP = storedTabsStateP.then(tagTime);
 
     const similarToLastP = Promise.all([_storedTabsStateP, getLastClosedTabAsync()])
-        .then((tabsAndLastClosed) => {
+        .then(tabsAndLastClosed => {
             const saved = tabsAndLastClosed[0];
             //TODO: move it to service?
             const lastClosed = tabsAndLastClosed[1]["lastClosedTab"];
@@ -47,7 +47,8 @@ function renderUI() {
             //TODO: pick the right tab!
             return saved[0];
         })
-        .then((mostSimilarTab) => showSimilarTab(mostSimilarTab))
+        .then(mostSimilarTab => showSimilarTab(mostSimilarTab))
+        .then(mostSimilarTab => setSimilarNavigation(mostSimilarTab))
         .catch(failureHandler);
 
     const listRenderP = _storedTabsStateP
@@ -85,6 +86,14 @@ function setFirstLinkNavigation(tabs) {
     return tabs;
 };
 
+let navigateToSimilar = defaultNavigateHandler;
+
+function setSimilarNavigation(tab) {
+    const tabId = tab.id;
+    navigateToSimilar = () => navigateToTabId(tabId);
+    return tab;
+};
+
 document.addEventListener("click", (e) => {
   // we cannot navigate with a simple href... this is the fix
   if (e.target.classList.contains('switch-tabs')) {
@@ -108,7 +117,9 @@ document.addEventListener("click", (e) => {
 
 // handle search
 document.getElementById("search-field").addEventListener('keyup', debounce( (evt) => {
-    if(evt.key === "ArrowDown") {
+    if(evt.key === "ArrowUp") {
+        navigateToSimilar();
+    } if(evt.key === "ArrowDown") {
         navigateToFirstLink();
     } else {
         renderUI();
