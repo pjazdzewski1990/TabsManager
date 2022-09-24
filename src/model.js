@@ -46,6 +46,40 @@ export function getLastClosedTabAsync() {
     return browser.storage.local.get(lastClosedTabStorageKey);
 }
 
+// this impl prefers simple, fast heuristic:
+// go over the meaningful words and pick the one that has at least "wordThreshold" same words
+export class SameWordsTabRecommender {
+    constructor(wordThreshold) {
+        this.wordThreshold = wordThreshold;
+    }
+
+    #normalizeString(str) {
+        return str.trim().split(/[^A-Za-z]/).filter(it => it.length);
+    }
+
+    // from the given tabs selects one that is most similar to the one given
+    recommend(similarTo, all) {
+        console.log("recommend(similarTo, all)", similarTo);
+        console.log("recommend(similarTo, all)", all);
+        if(similarTo) {
+            const similarToWords = this.#normalizeString(similarTo.title);
+            for (const tab of all) {
+              const tabWords = this.#normalizeString(tab.title);
+              var overlap = similarToWords.filter(function(val) {
+                return tabWords.indexOf(val) != -1;
+              });
+              console.log(`${similarTo.title} <==> ${tab.title}`, overlap);
+              // end early if we found enough words
+              if(overlap.length >= this.wordThreshold) {
+                return tab;
+              }
+            }
+        }
+        // return anything if undefined or there's not match
+        return all[0];
+    }
+}
+
 export class FirefoxAsyncTranslator {
     // stores an title -> language code map
     tabTextToLanguageMap;

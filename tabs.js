@@ -1,6 +1,6 @@
 // the 'main' of the application
 
-import {getLastClosedTabAsync, FirefoxAsyncTranslator, FirefoxTabProvider, FirefoxTabStorage, enrichTabState, filterTabState} from './src/model.js';
+import {getLastClosedTabAsync, FirefoxAsyncTranslator, FirefoxTabProvider, FirefoxTabStorage, enrichTabState, filterTabState, SameWordsTabRecommender} from './src/model.js';
 import {clearList, listTabs, showSimilarTab} from './src/ui.js';
 import {debounce, navigateToTabId, runAfterDelay} from './src/utils.js';
 
@@ -33,6 +33,8 @@ const tabsProvider = new FirefoxTabProvider();
 const storedTabsStateP = tabsProvider.provide();
 const tabsTranslatorP = buildTranslatorAsync(storage);
 
+const tabsRecommender = new SameWordsTabRecommender(1);
+
 function renderUI() {
     const stringQuery = document.getElementById("search-field").value;
 
@@ -40,12 +42,8 @@ function renderUI() {
 
     const similarToLastP = Promise.all([_storedTabsStateP, getLastClosedTabAsync()])
         .then(tabsAndLastClosed => {
-            const saved = tabsAndLastClosed[0];
-            //TODO: move it to service?
             const lastClosed = tabsAndLastClosed[1]["lastClosedTab"];
-            console.log("Last closed tab was:", lastClosed);
-            //TODO: pick the right tab!
-            return saved[0];
+            return tabsRecommender.recommend(lastClosed, tabsAndLastClosed[0]);
         })
         .then(mostSimilarTab => showSimilarTab(mostSimilarTab))
         .then(mostSimilarTab => setSimilarNavigation(mostSimilarTab))
