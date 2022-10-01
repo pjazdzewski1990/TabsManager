@@ -33,7 +33,7 @@ const tabsProvider = new FirefoxTabProvider();
 const storedTabsStateP = tabsProvider.provide();
 const tabsTranslatorP = buildTranslatorAsync(storage);
 
-const tabsRecommender = new SameWordsTabRecommender(1);
+const tabsRecommender = new SameWordsTabRecommender(2);
 
 function renderUI() {
     const stringQuery = document.getElementById("search-field").value;

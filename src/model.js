@@ -54,7 +54,7 @@ export class SameWordsTabRecommender {
     }
 
     #normalizeString(str) {
-        return str.trim().split(/[^A-Za-z]/).filter(it => it.length);
+        return str.trim().split(/[^A-Za-z]/).filter(it => it.length > 3).map(it => it.toLowerCase());
     }
 
     // from the given tabs selects one that is most similar to the one given
