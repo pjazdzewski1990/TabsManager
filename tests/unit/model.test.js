@@ -1,4 +1,4 @@
-import {FirefoxTabProvider, enrichTabState, filterTabState} from './../../src/model';
+import {enrichTabState, filterTabState, FirefoxTabProvider, SameWordsTabRecommender} from './../../src/model';
 
 class TestTabProvider {
     constructor(_tabs) {
@@ -55,7 +55,7 @@ test('detect language in tabs', () => {
     ];
     const translator = new TestTranslator();
     //when we translate
-    const result = enrichTabState(tabsUnderTest, translator)
+    const result = enrichTabState(tabsUnderTest, translator);
     //then we expect the results to be assigned titles
     expect(result.length).toEqual(4);
     expect(result.map(t => [t.id, t.languageCode])).toEqual([
@@ -64,6 +64,28 @@ test('detect language in tabs', () => {
         [3, "de"],
         [4, "pl"]
     ]);
+});
+
+test('find similar tabs based on similarity of titles', () => {
+    //given some tabs
+    const tabsUnderTest = [
+        {id: 4, title: "LondonTokyoChicago", url: ""}, // string is split by space, not characters
+        {id: 1, title: "Paris", url: ""},
+        {id: 2, title: "LONDON", url: ""},
+        {id: 3, title: "Athens London Tokyo Chicago", url: ""},
+    ];
+    //and recommender
+    const recommenderFor1 = new SameWordsTabRecommender(1);
+    //when we recommend we should get a similar tab
+    expect(recommenderFor1.recommend({title: "Tokyo"}, tabsUnderTest).title).toEqual("Athens London Tokyo Chicago");
+    // ignore case
+    expect(recommenderFor1.recommend({title: "London"}, tabsUnderTest).title).toEqual("LONDON");
+    // return first element if nothing is found
+    expect(recommenderFor1.recommend({title: "Cairo"}, tabsUnderTest).title).toEqual("LondonTokyoChicago");
+    // return first element if no reference is provided
+    expect(recommenderFor1.recommend(undefined, tabsUnderTest).title).toEqual("LondonTokyoChicago");
+    // return nothing if no data is provided
+    expect(recommenderFor1.recommend({title: "Cairo"}, [])).toEqual(undefined);
 });
 
 //TODO: find a way to test FF APIs as mocking everything is not viable in the the long run
