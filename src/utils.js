@@ -5,19 +5,18 @@
 export function debounce(callback, wait) {
   let timeout;
   return (...args) => {
-      clearTimeout(timeout);
-      timeout = setTimeout(function () { callback.apply(this, args); }, wait);
+    clearTimeout(timeout);
+    timeout = setTimeout(function () { callback.apply(this, args); }, wait);
   };
-};
-
+}
 
 export function navigateToTabId(tabId) {
-    console.log("Navigating to tab", tabId);
-    browser.tabs.update(tabId, { active: true  });
-};
+  console.log('Navigating to tab', tabId);
+  browser.tabs.update(tabId, { active: true });
+}
 
 export function runAfterDelay(milliSecondDelay) {
-  return new Promise(resolve => {
+  return new Promise((resolve) => {
     window.setTimeout(resolve, milliSecondDelay);
   });
 }

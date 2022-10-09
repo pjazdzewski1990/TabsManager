@@ -9,7 +9,11 @@
   "author": "Patryk Jazdzewski",
   "license": "",
   "devDependencies": {
-    "jest": "^28.1.1"
+    "eslint": "^7.32.0 || ^8.2.0",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-plugin-import": "^2.25.2",
+    "jest": "^28.1.1",
+    "prettier": "2.7.1"
   },
   "type": "module"
 }
