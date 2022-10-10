@@ -25,13 +25,19 @@ function createLanguageIconHtml(languageCode) {
   return langIcon;
 }
 
+function appendEmptyPlaceholder(currentTabs) {
+  const newListElem = document.createElement('li');
+  newListElem.textContent = 'Nothing found...';
+  currentTabs.appendChild(newListElem);
+}
+
 export function listTabs(tabs) {
   const tabsList = document.getElementById('tabs-list');
   // clear list
   clearList(tabsList);
   // prepare elements
   const currentTabs = document.createDocumentFragment();
-  for (const tab of tabs) {
+  tabs.forEach((tab) => {
     const langIcon = createLanguageIconHtml(tab.languageCode);
 
     const tabLink = document.createElement('a');
@@ -43,7 +49,7 @@ export function listTabs(tabs) {
     newListElem.appendChild(langIcon);
     newListElem.appendChild(tabLink);
     currentTabs.appendChild(newListElem);
-  }
+  });
   // .. or a placeholder if empty
   if (tabs.length === 0) {
     appendEmptyPlaceholder(currentTabs);
@@ -54,7 +60,7 @@ export function listTabs(tabs) {
 }
 
 export function showSimilarTab(tab) {
-  console.log('showSimilarTab', tab);
+  console.log('showSimilarTab element:', tab);
   const tabsElem = document.getElementById('similar-tab');
   // clear list
   clearList(tabsElem);
@@ -67,10 +73,4 @@ export function showSimilarTab(tab) {
   // fill list
   tabsElem.appendChild(tabLink);
   return tab;
-}
-
-function appendEmptyPlaceholder(currentTabs) {
-  const newListElem = document.createElement('li');
-  newListElem.textContent = 'Nothing found...';
-  currentTabs.appendChild(newListElem);
 }

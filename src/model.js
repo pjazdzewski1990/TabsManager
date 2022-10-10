@@ -2,7 +2,9 @@
 
 export class FirefoxTabProvider {
   // get new tabs info
+  // eslint-disable-next-line class-methods-use-this
   provide() {
+    // eslint-disable-next-line no-undef
     return browser.tabs.query({ currentWindow: true });
   }
 }
@@ -12,6 +14,7 @@ export class FirefoxTabStorage {
 
   getAsync() {
     // returns an title -> language code map
+    // eslint-disable-next-line no-undef
     const storedAsync = browser.storage.local.get(this.fetchAllTabTranslations);
     return storedAsync.then((storedState) => {
       console.log('Read tabs information', storedState);
@@ -36,12 +39,15 @@ export class FirefoxTabStorage {
     // TODO: should there be an upper bound on the pages count?
     return this.getAsync()
       .then((storedState) => this.#prepareStorageObject(storedState, capturedState))
-      .then((mergedState) => browser.storage.local.set(mergedState)); // TODO: we don't need all the keys if we would flatten???
+      // TODO: we don't need all the keys if we would flatten???
+      // eslint-disable-next-line no-undef
+      .then((mergedState) => browser.storage.local.set(mergedState));
   }
 }
 
 const lastClosedTabStorageKey = 'lastClosedTab';
 export function getLastClosedTabAsync() {
+  // eslint-disable-next-line no-undef
   return browser.storage.local.get(lastClosedTabStorageKey);
 }
 
@@ -52,8 +58,10 @@ export class SameWordsTabRecommender {
     this.wordThreshold = wordThreshold;
   }
 
+  // eslint-disable-next-line class-methods-use-this
   #normalizeString(str) {
-    return str.trim().split(/[^A-Za-z]/).filter((it) => it.length > 3).map((it) => it.toLowerCase());
+    const safeString = str || '';
+    return safeString.trim().split(/[^A-Za-z]/).filter((it) => it.length > 3).map((it) => it.toLowerCase());
   }
 
   // from the given tabs selects one that is most similar to the one given
@@ -62,15 +70,14 @@ export class SameWordsTabRecommender {
     console.log('recommend(similarTo, all)', all);
     if (similarTo) {
       const similarToWords = this.#normalizeString(similarTo.title);
-      for (const tab of all) {
+      const similar = all.find((tab) => {
         const tabWords = this.#normalizeString(tab.title);
-        const overlap = similarToWords.filter((val) => tabWords.indexOf(val) != -1);
+        const overlap = similarToWords.filter((val) => tabWords.indexOf(val) !== -1);
         console.log(`${similarTo.title} <==> ${tab.title}`, overlap);
-        // end early if we found enough words
-        if (overlap.length >= this.wordThreshold) {
-          return tab;
-        }
-      }
+        // end if we found enough words
+        return overlap.length >= this.wordThreshold;
+      });
+      return similar || all[0];
     }
     // return anything if undefined or there's not match
     return all[0];
@@ -96,11 +103,15 @@ export class FirefoxAsyncTranslator {
     // start async process to update the cache
     const callback = (detectionObject) => {
       if (detectionObject.languages.length > 0) {
-        this.tabTextToLanguageMap.set(textToDetectLanguageFrom, detectionObject.languages[0].language);
+        this.tabTextToLanguageMap.set(
+          textToDetectLanguageFrom,
+          detectionObject.languages[0].language
+        );
       } else {
         this.tabTextToLanguageMap.set(textToDetectLanguageFrom, 'UNKNOWN');
       }
     };
+    // eslint-disable-next-line no-undef
     browser.i18n.detectLanguage(textToDetectLanguageFrom).then((lang) => callback(lang));
     // return message for now
     return 'LATER';
@@ -149,7 +160,7 @@ export function filterTabState(tabs, stringQuery) {
   return tabs.filter((tab) => {
     const searchContent = tabToSearchString(tab);
     const wasFound = new RegExp(searchExpression).test(searchContent);
-    //        console.log("Testing " + searchContent + " for " + searchExpression + " => " + wasFound);
+    // console.log("Testing " + searchContent + " for " + searchExpression + " => " + wasFound);
     return wasFound;
   });
 }

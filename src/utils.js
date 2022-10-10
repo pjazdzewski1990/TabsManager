@@ -12,6 +12,7 @@ export function debounce(callback, wait) {
 
 export function navigateToTabId(tabId) {
   console.log('Navigating to tab', tabId);
+  // eslint-disable-next-line no-undef
   browser.tabs.update(tabId, { active: true });
 }
 
