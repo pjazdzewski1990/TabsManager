@@ -12,6 +12,7 @@ module.exports = {
   },
   rules: {
     "func-names": "off",
-    "no-console": "off"
+    "no-console": "off",
+    "max-classes-per-file": ["error", 3]
   },
 };

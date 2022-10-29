@@ -1,6 +1,8 @@
 // the 'main' of the application
 
-import {getLastClosedTabAsync, FirefoxAsyncTranslator, FirefoxTabProvider, FirefoxTabStorage, enrichTabState, filterTabState, SameWordsTabRecommender} from './src/model.js';
+import {getLastClosedTabAsync, FirefoxAsyncTranslator, enrichTabState, filterTabState, SameWordsTabRecommender} from './src/model/model.js';
+import {FirefoxTabProvider} from './src/model/tabprovider.js';
+import {FirefoxTabStorage} from './src/model/tabstorage.js';
 import {clearList, listTabs, showSimilarTab} from './src/ui.js';
 import {debounce, navigateToTabId, runAfterDelay} from './src/utils.js';
 

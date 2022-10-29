@@ -1,49 +1,4 @@
-// holds functions related to obtaining and handling tab state
 
-export class FirefoxTabProvider {
-  // get new tabs info
-  // eslint-disable-next-line class-methods-use-this
-  provide() {
-    // eslint-disable-next-line no-undef
-    return browser.tabs.query({ currentWindow: true });
-  }
-}
-
-export class FirefoxTabStorage {
-  fetchAllTabTranslations = 'all-tab-translations';
-
-  getAsync() {
-    // returns an title -> language code map
-    // eslint-disable-next-line no-undef
-    const storedAsync = browser.storage.local.get(this.fetchAllTabTranslations);
-    return storedAsync.then((storedState) => {
-      console.log('Read tabs information', storedState);
-      return storedState['all-tab-translations'];
-    })
-      .then((storedState) => {
-        const state = (!storedState) ? new Map() : storedState;
-        return state;
-      });
-  }
-
-  // we merge the 2 states, where the new one overwrites the existing one
-  #prepareStorageObject(storedState, capturedState) {
-    const mergedState = new Map([...storedState, ...capturedState]);
-    const obj = {};
-    obj[this.fetchAllTabTranslations] = mergedState;
-    console.log('Upserting tabs information', obj);
-    return obj;
-  }
-
-  upsertAsync(capturedState) {
-    // TODO: should there be an upper bound on the pages count?
-    return this.getAsync()
-      .then((storedState) => this.#prepareStorageObject(storedState, capturedState))
-      // TODO: we don't need all the keys if we would flatten???
-      // eslint-disable-next-line no-undef
-      .then((mergedState) => browser.storage.local.set(mergedState));
-  }
-}
 
 const lastClosedTabStorageKey = 'lastClosedTab';
 export function getLastClosedTabAsync() {
@@ -105,7 +60,7 @@ export class FirefoxAsyncTranslator {
       if (detectionObject.languages.length > 0) {
         this.tabTextToLanguageMap.set(
           textToDetectLanguageFrom,
-          detectionObject.languages[0].language
+          detectionObject.languages[0].language,
         );
       } else {
         this.tabTextToLanguageMap.set(textToDetectLanguageFrom, 'UNKNOWN');
