@@ -1,4 +1,7 @@
-import {enrichTabState, filterTabState, FirefoxTabProvider, SameWordsTabRecommender} from './../../src/model';
+import {enrichTabState} from './../../src/model/enrichedTab.js';
+import {FirefoxTabProvider} from './../../src/model/tabprovider.js';
+import {SameWordsTabRecommender} from './../../src/model/tabrecommender.js';
+import {filterTabState} from './../../src/model/model.js';
 
 class TestTabProvider {
     constructor(_tabs) {
