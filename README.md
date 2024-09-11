@@ -4,8 +4,8 @@
 - navigate to tab
 - tab counter
 - identify the language
+- find similar to this tab [Basic]
 - identify the topic [TODO]
-- find similar to this tab
 - aggregate tabs by content [TODO]
 
 ### Running 
