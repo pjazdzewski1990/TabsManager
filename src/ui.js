@@ -1,12 +1,20 @@
 // functions to handle UI updates
 
+/**
+ * Goes over the provided lsit element and clears it
+ * @param {HTMLElement} listElem Htlm li element to be cleared
+ */
 export function clearList(listElem) {
   while (listElem.firstChild) {
     listElem.removeChild(listElem.lastChild);
   }
 }
 
-// builds an Html from a language code (and special values that we use)
+/**
+ * Builds an Html <img> tag to represent the language code provided
+ * @param {String} languageCode ISO language code to be used (say: en, pl, fr) or 'later' (if identification is in progress) or 'unknown' (if identification process failed)
+ * @returns {HTMLElement} Img tag representing a language code
+ */
 function createLanguageIconHtml(languageCode) {
   const langIcon = document.createElement('img');
   langIcon.alt = languageCode;
@@ -25,14 +33,23 @@ function createLanguageIconHtml(languageCode) {
   return langIcon;
 }
 
+/**
+ * Given the html tab list element, appends a placeholder value
+ * @param {HTMLElement} currentTabs Parent element to which 
+ */
 function appendEmptyPlaceholder(currentTabs) {
   const newListElem = document.createElement('li');
   newListElem.textContent = 'Nothing found...';
   currentTabs.appendChild(newListElem);
 }
 
+/**
+ * Given a list of tab objects refreshes the HTML node with id 'tabs-list'
+ * @param {Array<EnrichedTab>} tabs Objects representing the tabs to be shown
+ * @returns {Array<EnrichedTab>} Returns the input array back, without any modification
+ */
 export function listTabs(tabs) {
-  const tabsList = document.getElementById('tabs-list');
+  const tabsList = document.getElementById('tabs-list');//TODO: is not pure
   // clear list
   clearList(tabsList);
   // prepare elements
@@ -59,9 +76,14 @@ export function listTabs(tabs) {
   return tabs;
 }
 
+/**
+ * Given a single tab, updates the HTML node with id 'similar-tab' to point towards that tab
+ * @param {Array<EnrichedTab>} tabs Objects representing the tabs to be shown
+ * @returns {Array<EnrichedTab>} Returns the input array back, without any modification
+ */
 export function showSimilarTab(tab) {
   console.log('showSimilarTab element:', tab);
-  const tabsElem = document.getElementById('similar-tab');
+  const tabsElem = document.getElementById('similar-tab');//TODO: is not pure
   // clear list
   clearList(tabsElem);
 
