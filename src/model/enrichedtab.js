@@ -1,5 +1,7 @@
-// domain specific wrapper around https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/API/tabs/Tab
-// with additional data appended for the plugin to use
+/**
+ * Domain specific wrapper around https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/API/tabs/Tab
+ * with additional data appended for the plugin to use
+ */
 class EnrichedTab {
   id;
 
@@ -17,8 +19,13 @@ class EnrichedTab {
   }
 }
 
-// takes raw tabs information and enriches it with additional information like:
-// - language used
+/**
+ * Enriches raw tab information with:
+ * - language uses 
+ * @param {array<>} tabs List of tab information
+ * @param {FirefoxAsyncTranslator} translator Service to use for language detection
+ * @returns {Array<EnrichedTab>} Input array converted to EnrichedTab
+ */
 export function enrichTabState(tabs, translator) {
   return tabs.map((tab) => {
     const language = translator.checkLanguageSync(tab.title);

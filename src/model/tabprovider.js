@@ -1,5 +1,8 @@
 export class FirefoxTabProvider {
-  // get new tabs info
+  /**
+   * Returns a list of tabs open
+   * @returns {Array<Object>} FF native list of open tabs
+   */
   // eslint-disable-next-line class-methods-use-this
   provide() {
     // eslint-disable-next-line no-undef

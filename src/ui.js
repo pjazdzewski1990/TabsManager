@@ -21,7 +21,7 @@ function createLanguageIconHtml(languageCode) {
   // in case of trouble translating - assume en
   // kudos to https://anandchowdhary.github.io/language-icons/
   // and https://flagicons.lipis.dev/
-  let langLink = (`https://unpkg.com/language-icons/icons/${languageCode}.svg`);
+  let langLink = `https://unpkg.com/language-icons/icons/${languageCode}.svg`;
   if (languageCode.toLowerCase() === 'later') {
     langLink = 'https://raw.githubusercontent.com/lipis/flag-icons/main/flags/1x1/un.svg';
   }

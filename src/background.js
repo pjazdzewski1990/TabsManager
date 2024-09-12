@@ -1,24 +1,35 @@
+
 /// TODO: investigate background pages for imports to work,
 // sadly it's not loading as specified in the docs
 // https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/Background_scripts
 // import {setLastClosedTabAsync} from './src/model/model.js';
 // as a workaround I copy the setting code here, rather than sharing it
 const lastClosedTabStorageKey = 'lastClosedTab';
+
+/**
+ * Save the provided tab in browser local storage
+ * @param {string} tab How long should we wait before running the callback
+ */
 function setLastClosedTabAsync(tab) {
-  // TODO: should we store the last X rather than 1?
   const lastClosedTabObj = {};
   lastClosedTabObj[lastClosedTabStorageKey] = tab;
   // eslint-disable-next-line no-undef
   return browser.storage.local.set(lastClosedTabObj);
 }
 
-// manage the badge UI
+/**
+ * Queries the browser for open tabs, then shows the count on the badge
+ * @param {number} tabId Identifier of the tab that caused the update
+ * @param {boolean} isOnRemoved Was the update caused by a removal
+ * @returns {Promise} Promise that completes when the update was done
+ */
 function updateCount(tabId, isOnRemoved) {
   // eslint-disable-next-line no-undef
-  return browser.tabs.query({})
+  return browser
+    .tabs
+    .query({})
     .then((tabs) => {
       let { length } = tabs;
-
       // onRemoved fires too early and the count is one too many.
       // see https://bugzilla.mozilla.org/show_bug.cgi?id=1396758
       if (isOnRemoved && tabId && tabs.map((t) => t.id).includes(tabId)) {
@@ -31,7 +42,11 @@ function updateCount(tabId, isOnRemoved) {
     });
 }
 
-// manage tab closing
+/**
+ * Adds a callback to track tabs closing:
+ * - update the badge counter
+ * - store the last seen tab
+ */
 // eslint-disable-next-line no-undef
 browser.tabs.onRemoved.addListener((tabId) => {
   console.log(`The tab with id: ${tabId}, is closing`);
@@ -42,20 +57,28 @@ browser.tabs.onRemoved.addListener((tabId) => {
   // so we can retrieve it later and in other parts of the app
   // FF doesn't make it particularly easy - we need to access the storage to get it out
   // eslint-disable-next-line no-undef
+  //TODO: dould we use the provider?
   const saveP = browser.tabs.query({ currentWindow: true })
     .then((tabs) => {
       const beingClosed = tabs.filter((tab) => tab.id === tabId);
       return beingClosed;
     })
-  // we save the full tab object in case something is needed
+    // we save the full tab object in case something is needed
     .then((tabs) => ((tabs.length > 0) ? { ...tabs[0] } : {}))
     .then((tab) => setLastClosedTabAsync(tab));
   return saveP;
 });
 
+/**
+ * Adds a callback to track tabs opening:
+ * - update the badge counter
+ */
 // eslint-disable-next-line no-undef
 browser.tabs.onCreated.addListener((tabId) => {
   updateCount(tabId, true);
 });
 
+/**
+ * When the plugin loads we will set the bad to the initial value
+ */
 updateCount();

@@ -10,6 +10,15 @@ export class FirefoxAsyncTranslator {
   // returns the value immediately, without blocking
   // returns "UNKNOWN" if cannot detect the language
   // returns "LATER" if the detection process was started and the user should try again later
+/**
+  * Given text, immediately returns:
+  * - a language code for known texts, say: "Hello World" => "en"
+  * - "UNKNOWN" if we cannot detect the language
+  * - "LATER" if the user should ask again in a moment
+  * The immediate return allows us to generate the UI without waiting
+  * @param {string} textToDetectLanguageFrom Text for which we should detect the language
+  * @returns {string} Either the language code or one of the 2 special codes
+  */
   checkLanguageSync(textToDetectLanguageFrom) {
     if (this.tabTextToLanguageMap.has(textToDetectLanguageFrom)) {
       return this.tabTextToLanguageMap.get(textToDetectLanguageFrom);
