@@ -11,7 +11,7 @@
       "size": 32
     }],
     "default_title": "tabs-manager",
-    "default_popup": "tabs.html"
+    "default_popup": "index.html"
   },
   "description": "",
   "homepage_url": "https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/Your_second_WebExtension",
