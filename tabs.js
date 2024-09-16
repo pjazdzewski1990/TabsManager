@@ -1,7 +1,7 @@
 // the 'main' of the application
 
-import {getLastClosedTabAsync, filterTabState} from './src/model/model.js';
-import {enrichTabState} from './src/model/enrichedtab.js';
+import {getLastClosedTabAsync, filterTabState} from './src/model/search.js';
+import {enrichTabState} from './src/model/enrichedTab.js';
 import {FirefoxTabProvider} from './src/model/tabprovider.js';
 import {FirefoxTabStorage} from './src/model/tabstorage.js';
 import {SameWordsTabRecommender} from './src/model/tabrecommender.js';
