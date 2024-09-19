@@ -1,6 +1,7 @@
 // the 'main' of the application
 
-import {getLastClosedTabAsync, filterTabState} from './src/model/search.js';
+import {filterTabState} from './src/model/search.js';
+import {getLastClosedTabAsync, lastClosedTabStorageKey} from './src/model/lastClosed.js';
 import {enrichTabState} from './src/model/enrichedTab.js';
 import {FirefoxTabProvider} from './src/model/tabprovider.js';
 import {FirefoxTabStorage} from './src/model/tabstorage.js';
@@ -47,7 +48,7 @@ function renderUI() {
 
     const similarToLastP = Promise.all([_storedTabsStateP, getLastClosedTabAsync()])
         .then(tabsAndLastClosed => {
-            const lastClosed = tabsAndLastClosed[1]["lastClosedTab"];
+            const lastClosed = tabsAndLastClosed[1][lastClosedTabStorageKey.toString()];
             return tabsRecommender.recommend(lastClosed, tabsAndLastClosed[0]);
         })
         .then(mostSimilarTab => showSimilarTab(mostSimilarTab))
