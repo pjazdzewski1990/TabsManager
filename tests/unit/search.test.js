@@ -21,36 +21,27 @@ const tabsUnderTest = [
 
 test('filters tabs based on the title', () => {
     //given some tabs
-    const provider = new TestTabProvider(tabsUnderTest);
     //when we filter by Test
-    const resultPromise = provider.provide().then(tabs => filterTabState(tabs, "Test"));
+    const result = filterTabState(tabsUnderTest, "Test");
     //then we expect the results to be filtered by title
-    return resultPromise.then(result => {
-        const expected = [1,2,3,4,5];
-        expect(result.map(t => t.id)).toEqual(expected);
-    });
+    const expected = [1,2,3,4,5];
+    return expect(result.map(t => t.id)).toEqual(expected);
 });
 
 test('filters tabs based on the title and language code', () => {
     //given some tabs
-    const provider = new TestTabProvider(tabsUnderTest);
     //when we filter by: Test OR language is pl
-    const resultPromise = provider.provide().then(tabs => filterTabState(tabs, "l:pl"));
+    const result = filterTabState(tabsUnderTest, "l:pl");
     //then we expect the results to be filtered by language
-    return resultPromise.then(result => {
-        const expected = [11];
-        expect(result.map(t => t.id)).toEqual(expected);
-    });
+    const expected = [11];
+    return expect(result.map(t => t.id)).toEqual(expected);
 });
 
 test('filters tabs based on the title and language code', () => {
     //given some tabs
-    const provider = new TestTabProvider(tabsUnderTest);
     //when we filter by: Foo OR language is en 
-    const resultPromise = provider.provide().then(tabs => filterTabState(tabs, "Foo l:en"));
+    const result = filterTabState(tabsUnderTest, "Foo l:en");
     //then we expect the results to be filtered
-    return resultPromise.then(result => {
-        const expected = [1,4,5,10];
-        expect(result.map(t => t.id)).toEqual(expected);
-    });
+    const expected = [1,4,5,10];
+    return expect(result.map(t => t.id)).toEqual(expected);
 });

@@ -29,7 +29,7 @@ export function filterTabState(tabs, stringQuery) {
   return tabs.filter((tab) => {
     const searchContent = tabToSearchString(tab);
     const wasFound = new RegExp(searchExpression).test(searchContent);
-    console.log("Testing " + searchContent + " for " + searchExpression + " => " + wasFound);
+    // console.log("Testing " + searchContent + " for " + searchExpression + " => " + wasFound);
     return wasFound;
   });
 }
