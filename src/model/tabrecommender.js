@@ -25,7 +25,7 @@ export class SameWordsTabRecommender {
       const similar = all.find((tab) => {
         const tabWords = this.#normalizeString(tab.title);
         const overlap = similarToWords.filter((val) => tabWords.indexOf(val) !== -1);
-        console.log(`${similarTo.title} <==> ${tab.title}`, overlap);
+        // console.log(`${similarTo.title} <==> ${tab.title}`, overlap);
         // end if we found enough words
         return overlap.length >= this.wordThreshold;
       });

@@ -5,7 +5,7 @@ import {getLastClosedTabAsync, lastClosedTabStorageKey} from './src/model/lastCl
 import {enrichTabState} from './src/model/enrichedTab.js';
 import {FirefoxTabProvider} from './src/model/tabprovider.js';
 import {FirefoxTabStorage} from './src/model/tabstorage.js';
-import {SameWordsTabRecommender} from './src/model/tabrecommender.js';
+import {SameWordsTabRecommender} from './src/model/tabRecommender.js';
 import {FirefoxAsyncTranslator} from './src/model/translator.js';
 import {clearList, listTabs, showSimilarTab} from './src/ui.js';
 import {debounce, navigateToTabId, runAfterDelay} from './src/utils.js';

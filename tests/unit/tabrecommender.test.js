@@ -1,4 +1,4 @@
-import {SameWordsTabRecommender} from '../../src/model/tabrecommender.js';
+import {SameWordsTabRecommender} from '../../src/model/tabRecommender.js';
 
 //TODO: use dummy tab objects
 // Note: order does matter as recommender takes the first one matching
