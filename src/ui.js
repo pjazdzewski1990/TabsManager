@@ -82,7 +82,7 @@ export function listTabs(tabs) {
  * @returns {Array<EnrichedTab>} Returns the input array back, without any modification
  */
 export function showSimilarTab(tab) {
-  console.log('showSimilarTab element:', tab);
+  // console.log('showSimilarTab element:', tab);
   const tabsElem = document.getElementById('similar-tab');//TODO: is not pure
   // clear list
   clearList(tabsElem);

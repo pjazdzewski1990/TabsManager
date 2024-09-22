@@ -23,6 +23,7 @@ export class FirefoxAsyncTranslator {
     if (this.tabTextToLanguageMap.has(textToDetectLanguageFrom)) {
       return this.tabTextToLanguageMap.get(textToDetectLanguageFrom);
     }
+    //TODO: move this to its own function
     // start async process to update the cache
     const callback = (detectionObject) => {
       if (detectionObject.languages.length > 0) {

@@ -7,14 +7,20 @@ export class FirefoxTabStorage {
   */
   getAsync() {
     // eslint-disable-next-line no-undef
-    const storedAsync = browser.storage.local.get(this.fetchAllTabTranslations);
-    return storedAsync.then((storedState) => {
-      console.log('Read tabs information', storedState);
-      return storedState['all-tab-translations'];
-    })
+    return browser.storage.local
+      .get(this.fetchAllTabTranslations)
       .then((storedState) => {
-        const state = (!storedState) ? new Map() : storedState;
-        return state;
+        if(!storedState || !storedState[this.fetchAllTabTranslations]) {
+          console.log('Returning empty translation list');
+          return new Map();
+        } else { 
+          const stored = storedState[this.fetchAllTabTranslations];
+          // it's already stored as Map, so no need to convert
+          return stored;
+        }
+      })
+      .then((storedState2) => {
+        return storedState2;
       });
   }
 
@@ -30,7 +36,7 @@ export class FirefoxTabStorage {
 
 /**
   * Given the current state, merges it with the old data and updates the storage
-  * @param {Array<EnrichedTab>} capturedState
+  * @param {Array<EnrichedTab>} capturedState Previous known state
   * @returns {Promise} Handler that completes or failes with the update process
   */
   upsertAsync(capturedState) {
