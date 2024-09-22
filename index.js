@@ -4,7 +4,7 @@ import {filterTabState} from './src/model/search.js';
 import {getLastClosedTabAsync, lastClosedTabStorageKey} from './src/model/lastClosed.js';
 import {enrichTabState} from './src/model/enrichedTab.js';
 import {FirefoxTabProvider} from './src/model/tabprovider.js';
-import {FirefoxTabStorage} from './src/model/tabstorage.js';
+import {FirefoxTabStorage} from './src/model/tabStorage.js';
 import {SameWordsTabRecommender} from './src/model/tabRecommender.js';
 import {FirefoxAsyncTranslator} from './src/model/translator.js';
 import {clearList, listTabs, showSimilarTab} from './src/ui.js';
