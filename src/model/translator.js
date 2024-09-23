@@ -1,4 +1,5 @@
 export class FirefoxAsyncTranslator {
+  //TODO: is it needed?
   // stores an title -> language code map
   tabTextToLanguageMap;
 
