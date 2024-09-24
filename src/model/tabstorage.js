@@ -23,8 +23,7 @@ export class FirefoxTabStorage {
           return new Map();
         } else { 
           const stored = storedState[this.fetchAllTabTranslations];
-          // it's already stored as Map, so no need to convert
-          return stored;
+          return new Map(Object.entries(stored));
         }
       })
       .catch(error => {
@@ -51,8 +50,8 @@ export class FirefoxTabStorage {
     console.log('Upserting tabs information #' + mergedState.size, mergedState.entries().next().value);
 
     //TODO: drop the last X elements from stored state to make room for captured state
-    const debug = Array.from({length: 10}, function(){ return this.next().value; }, mergedState.entries());
-    console.log('debug', debug);
+    // const debug = Array.from({length: 10}, function(){ return this.next().value; }, mergedState.entries());
+    // console.log('debug', debug);
 
     return wrapperForStorage;
   }
