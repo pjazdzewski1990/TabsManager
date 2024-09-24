@@ -26,6 +26,11 @@ export class FirefoxTabStorage {
           // it's already stored as Map, so no need to convert
           return stored;
         }
+      })
+      .catch(error => {
+        console.log('Tab read failed', error);
+        // in case of a failure to access the storage we will just save the data later
+        return new Map();
       });
   }
 

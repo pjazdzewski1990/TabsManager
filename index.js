@@ -27,11 +27,6 @@ const storage = new FirefoxTabStorage();
 function buildTranslatorAsync(storage) {
     return storage
         .getAsync()
-        .catch(error => {
-            failureHandler(error);
-            // in case of a failure to access the storage we will just save the data
-            return new Map();
-        })
         .then(tabsData => new FirefoxAsyncTranslator(tabsData));
 }
 
