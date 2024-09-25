@@ -65,6 +65,8 @@ export class FirefoxTabStorage {
     return this.getAsync()
       .then((storedState) => this.#prepareStorageObject(storedState, capturedState))
       // eslint-disable-next-line no-undef
-      .then((mergedState) => this.storage.save(mergedState));
+      .then((mergedState) =>
+        this.storage.save(mergedState).then((_) => mergedState[this.fetchAllTabTranslations])
+      );
   }
 }
