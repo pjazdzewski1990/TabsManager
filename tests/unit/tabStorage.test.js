@@ -35,17 +35,17 @@ test('should read empty if storage did fail', () => {
 });
 
 test('should read set if given one before', () => {
-    const input = {
-        "site": "en",
-        "strona": "pl",
-        "Seite": "de"
-    };
+    const input = new Map([
+        ["site", "en"],
+        ["strona", "pl"],
+        ["Seite", "de"]
+    ]);
     const failure = Promise.resolve({'all-tab-translations': input});
     const storage = new TestBrowserStorage(failure);
     const tabs = new FirefoxTabStorage(storage);
     const resultP = tabs.getAsync();
     return resultP.then((result) => {
-        expect(result).toEqual(new Map(Object.entries(input)));
+        expect(result).toEqual(input);
     });
 });
 

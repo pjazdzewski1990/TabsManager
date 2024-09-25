@@ -23,7 +23,7 @@ export class FirefoxTabStorage {
           return new Map();
         } else { 
           const stored = storedState[this.fetchAllTabTranslations];
-          return new Map(Object.entries(stored));
+          return stored;
         }
       })
       .catch(error => {
