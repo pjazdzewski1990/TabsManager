@@ -63,7 +63,8 @@ function renderUI() {
 
 function storeUIState() {
     // save data for later after X seconds
-    return runAfterDelay(5000)
+    // TODO: should there be an upper bound on the pages count?
+    return runAfterDelay(4000)
         .then(() => tabsTranslatorP)
         .then(translator => storage.upsertAsync(translator.tabTextToLanguageMap));
 }

@@ -22,8 +22,9 @@ export class FirefoxTabStorage {
           console.log('Returning empty translation list');
           return new Map();
         } else { 
-          const stored = storedState[this.fetchAllTabTranslations];
-          return stored;
+          const storedTabs = storedState[this.fetchAllTabTranslations];
+          console.log('Reading tabs information #' + storedTabs.size, storedTabs.entries().next().value);
+          return storedTabs;
         }
       })
       .catch(error => {
@@ -34,24 +35,15 @@ export class FirefoxTabStorage {
   }
 
   /**
-   * We take the pre-existing stored data and the new data,
-   * merge them together
-   * wrap in an object for save storage by placing it as an object key
-   * return that object back to the caller
-   * @param {Map} storedState 
+   * Wrap the captured data into an object for storage
    * @param {Map} capturedState 
    * @returns {Object} The stored state is returned back
    */
-  #prepareStorageObject(storedState, capturedState) {
-    // TODO: should there be an upper bound on the pages count?
-    const mergedState = new Map([...storedState, ...capturedState]);
+  #prepareStorageObject(capturedState) {
+    const mergedState = new Map([...capturedState]);
     const wrapperForStorage = {};
     wrapperForStorage[this.fetchAllTabTranslations] = mergedState;
     console.log('Upserting tabs information #' + mergedState.size, mergedState.entries().next().value);
-
-    //TODO: drop the last X elements from stored state to make room for captured state
-    // const debug = Array.from({length: 10}, function(){ return this.next().value; }, mergedState.entries());
-    // console.log('debug', debug);
 
     return wrapperForStorage;
   }
@@ -62,11 +54,9 @@ export class FirefoxTabStorage {
   * @returns {Promise} Handler that completes or failes with the update process
   */
   upsertAsync(capturedState) {
-    return this.getAsync()
-      .then((storedState) => this.#prepareStorageObject(storedState, capturedState))
-      // eslint-disable-next-line no-undef
-      .then((mergedState) =>
-        this.storage.save(mergedState).then((_) => mergedState[this.fetchAllTabTranslations])
-      );
+    const capturedStateForStorage = this.#prepareStorageObject(capturedState);
+    return this.storage
+      .save(capturedStateForStorage)
+      .then((_) => capturedStateForStorage[this.fetchAllTabTranslations]);
   }
 }
