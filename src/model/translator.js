@@ -1,16 +1,14 @@
-export class FirefoxAsyncTranslator {
-  //TODO: is it needed?
-  // stores an title -> language code map
-  tabTextToLanguageMap;
+//TODO: handle warning
+import {FirefoxI18N} from './browser/firefoxI18N.js';
 
-  constructor(storedState) {
+export class AsyncTranslator {
+  
+  constructor(storedState, i18N) {
+    // stores an title -> language code map
     this.tabTextToLanguageMap = storedState;
+    this.i81n = i18N || new FirefoxI18N();
   }
 
-  // given a text returns the language code, say: "Hello World" => "en"
-  // returns the value immediately, without blocking
-  // returns "UNKNOWN" if cannot detect the language
-  // returns "LATER" if the detection process was started and the user should try again later
 /**
   * Given text, immediately returns:
   * - a language code for known texts, say: "Hello World" => "en"
@@ -26,7 +24,7 @@ export class FirefoxAsyncTranslator {
     }
     //TODO: move this to its own function
     // start async process to update the cache
-    const callback = (detectionObject) => {
+    const updateTextToLanguageMap = (detectionObject) => {
       if (detectionObject.languages.length > 0) {
         this.tabTextToLanguageMap.set(
           textToDetectLanguageFrom,
@@ -36,8 +34,7 @@ export class FirefoxAsyncTranslator {
         this.tabTextToLanguageMap.set(textToDetectLanguageFrom, 'UNKNOWN');
       }
     };
-    // eslint-disable-next-line no-undef
-    browser.i18n.detectLanguage(textToDetectLanguageFrom).then((lang) => callback(lang));
+    this.i81n.detectLanguage(textToDetectLanguageFrom).then((lang) => updateTextToLanguageMap(lang));
     // return message for now
     return 'LATER';
   }

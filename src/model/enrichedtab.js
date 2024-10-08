@@ -23,7 +23,7 @@ class EnrichedTab {
  * Enriches raw tab information with:
  * - language uses 
  * @param {array<>} tabs List of tab information
- * @param {FirefoxAsyncTranslator} translator Service to use for language detection
+ * @param {AsyncTranslator} translator Service to use for language detection
  * @returns {Array<EnrichedTab>} Input array converted to EnrichedTab
  */
 export function enrichTabState(tabs, translator) {
