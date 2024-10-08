@@ -9,6 +9,18 @@ export class AsyncTranslator {
     this.i81n = i18N || new FirefoxI18N();
   }
 
+  // start async process to update the cache
+  #updateTextToLanguageMap(detectionObject) {
+    if (detectionObject.languages.length > 0) {
+      this.tabTextToLanguageMap.set(
+        textToDetectLanguageFrom,
+        detectionObject.languages[0].language,
+      );
+    } else {
+      this.tabTextToLanguageMap.set(textToDetectLanguageFrom, 'UNKNOWN');
+    }
+  }
+
 /**
   * Given text, immediately returns:
   * - a language code for known texts, say: "Hello World" => "en"
@@ -22,19 +34,8 @@ export class AsyncTranslator {
     if (this.tabTextToLanguageMap.has(textToDetectLanguageFrom)) {
       return this.tabTextToLanguageMap.get(textToDetectLanguageFrom);
     }
-    //TODO: move this to its own function
-    // start async process to update the cache
-    const updateTextToLanguageMap = (detectionObject) => {
-      if (detectionObject.languages.length > 0) {
-        this.tabTextToLanguageMap.set(
-          textToDetectLanguageFrom,
-          detectionObject.languages[0].language,
-        );
-      } else {
-        this.tabTextToLanguageMap.set(textToDetectLanguageFrom, 'UNKNOWN');
-      }
-    };
-    this.i81n.detectLanguage(textToDetectLanguageFrom).then((lang) => updateTextToLanguageMap(lang));
+  
+    this.i81n.detectLanguage(textToDetectLanguageFrom).then((lang) => this.#updateTextToLanguageMap(lang));
     // return message for now
     return 'LATER';
   }
