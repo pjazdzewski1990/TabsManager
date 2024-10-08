@@ -1,4 +1,4 @@
-import {AsyncTranslator} from '../../src/model/translator.js';
+import {AsyncTranslator} from '../../src/model/asyncTranslator.js';
 
 class TestI18N {
     detectLanguage(text) {

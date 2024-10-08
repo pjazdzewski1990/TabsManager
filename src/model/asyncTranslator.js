@@ -10,7 +10,7 @@ export class AsyncTranslator {
   }
 
   // start async process to update the cache
-  #updateTextToLanguageMap(detectionObject) {
+  #updateTextToLanguageMap(textToDetectLanguageFrom, detectionObject) {
     if (detectionObject.languages.length > 0) {
       this.tabTextToLanguageMap.set(
         textToDetectLanguageFrom,
@@ -35,7 +35,8 @@ export class AsyncTranslator {
       return this.tabTextToLanguageMap.get(textToDetectLanguageFrom);
     }
   
-    this.i81n.detectLanguage(textToDetectLanguageFrom).then((lang) => this.#updateTextToLanguageMap(lang));
+    this.i81n.detectLanguage(textToDetectLanguageFrom)
+      .then((detectionObject) => this.#updateTextToLanguageMap(textToDetectLanguageFrom, detectionObject));
     // return message for now
     return 'LATER';
   }

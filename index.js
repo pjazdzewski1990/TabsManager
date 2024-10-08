@@ -6,7 +6,7 @@ import {enrichTabState} from './src/model/enrichedTab.js';
 import {FirefoxTabProvider} from './src/model/tabprovider.js';
 import {FirefoxTabStorage} from './src/model/tabStorage.js';
 import {SameWordsTabRecommender} from './src/model/tabRecommender.js';
-import {AsyncTranslator} from './src/model/translator.js';
+import {AsyncTranslator} from './src/model/asyncTranslator.js';
 import {clearList, listTabs, showSimilarTab} from './src/ui.js';
 import {debounce, navigateToTabId, runAfterDelay} from './src/utils.js';
 
