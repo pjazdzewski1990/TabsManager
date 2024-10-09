@@ -1,11 +1,11 @@
 // the 'main' of the application
 
 import {filterTabState} from './src/model/search.js';
-import {getLastClosedTabAsync, lastClosedTabStorageKey} from './src/model/lastClosed.js';
+import {getLastClosedTabAsync, lastClosedTabStorageKey} from './src/model/browser/lastClosed.js';
 import {enrichTabState} from './src/model/enrichedTab.js';
-import {FirefoxTabProvider} from './src/model/tabprovider.js';
-import {FirefoxTabStorage} from './src/model/tabStorage.js';
-import {SameWordsTabRecommender} from './src/model/tabRecommender.js';
+import {FirefoxTabProvider} from './src/model/browser/firefoxTabProvider.js';
+import {TabStorage} from './src/model/tabStorage.js';
+import {SameWordsTabRecommender} from './src/model/sameWordsTabRecommender.js';
 import {AsyncTranslator} from './src/model/asyncTranslator.js';
 import {clearList, listTabs, showSimilarTab} from './src/ui.js';
 import {debounce, navigateToTabId, runAfterDelay} from './src/utils.js';
@@ -22,7 +22,7 @@ function failureHandler(error) {
     console.log("Render failed", error);
 };
 
-const storage = new FirefoxTabStorage();
+const storage = new TabStorage();
 
 function buildTranslatorAsync(storage) {
     return storage

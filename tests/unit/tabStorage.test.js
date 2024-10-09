@@ -1,4 +1,4 @@
-import {FirefoxTabStorage} from '../../src/model/tabStorage.js';
+import {TabStorage} from '../../src/model/tabStorage.js';
 
 // replacement for FirefoxBrowserStorage
 class TestBrowserStorage {
@@ -17,7 +17,7 @@ class TestBrowserStorage {
 
 test('should read empty set if no storage is set', () => {
     const storage = new TestBrowserStorage();
-    const tabs = new FirefoxTabStorage(storage);
+    const tabs = new TabStorage(storage);
     const resultP = tabs.getAsync();
     return resultP.then((result) => {
         expect(result).toEqual(new Map());
@@ -27,7 +27,7 @@ test('should read empty set if no storage is set', () => {
 test('should read empty if storage did fail', () => {
     const failure = Promise.reject(new Error('boom'));
     const storage = new TestBrowserStorage(failure);
-    const tabs = new FirefoxTabStorage(storage);
+    const tabs = new TabStorage(storage);
     const resultP = tabs.getAsync();
     return resultP.then((result) => {
         expect(result).toEqual(new Map());
@@ -42,7 +42,7 @@ test('should read set if given one before', () => {
     ]);
     const failure = Promise.resolve({'all-tab-translations': input});
     const storage = new TestBrowserStorage(failure);
-    const tabs = new FirefoxTabStorage(storage);
+    const tabs = new TabStorage(storage);
     const resultP = tabs.getAsync();
     return resultP.then((result) => {
         expect(result).toEqual(input);
@@ -70,7 +70,7 @@ test('should overwrite old keys if needed', () => {
     ]);
     const failure = Promise.resolve({'all-tab-translations': input1});
     const storage = new TestBrowserStorage(failure);
-    const tabs = new FirefoxTabStorage(storage);
+    const tabs = new TabStorage(storage);
     const resultP = tabs.upsertAsync(input2).then((_) => tabs.upsertAsync(input3));
     return resultP.then((result) => {
         expect(result).toEqual(expected);
