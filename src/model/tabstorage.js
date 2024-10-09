@@ -1,4 +1,4 @@
-import {FirefoxBrowserStorage} from './browserStorage.js';
+import {FirefoxBrowserStorage} from './browser/browserStorage.js';
 
 export class FirefoxTabStorage {
   fetchAllTabTranslations = 'all-tab-translations';
