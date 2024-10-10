@@ -1,10 +1,4 @@
-
-/// TODO: investigate background pages for imports to work,
-// sadly it's not loading as specified in the docs
-// https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/Background_scripts
-// import {setLastClosedTabAsync} from './src/model/model.js';
-// as a workaround I copy the setting code here, rather than sharing it
-const lastClosedTabStorageKey = 'lastClosedTab';
+import {lastClosedTabStorageKey} from './model/browser/lastClosed.js';
 
 /**
  * Save the provided tab in browser local storage
@@ -12,6 +6,7 @@ const lastClosedTabStorageKey = 'lastClosedTab';
  */
 function setLastClosedTabAsync(tab) {
   const lastClosedTabObj = {};
+  console.log("lastClosedTabStorageKey", lastClosedTabStorageKey);
   lastClosedTabObj[lastClosedTabStorageKey] = tab;
   // eslint-disable-next-line no-undef
   return browser.storage.local.set(lastClosedTabObj);

@@ -1,7 +1,7 @@
 {
   "name": "tabs-manager",
   "version": "1.0.0",
-  "description": "Set of tools to help manage laaarge Firefox tab stacks",
+  "description": "Set of tools to help manage my laaarge Firefox tab stacks",
   "main": "index.js",
   "scripts": {
     "test": "jest"
