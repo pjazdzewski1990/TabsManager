@@ -1,16 +1,4 @@
-import {lastClosedTabStorageKey} from './model/browser/lastClosed.js';
-
-/**
- * Save the provided tab in browser local storage
- * @param {string} tab How long should we wait before running the callback
- */
-function setLastClosedTabAsync(tab) {
-  const lastClosedTabObj = {};
-  console.log("lastClosedTabStorageKey", lastClosedTabStorageKey);
-  lastClosedTabObj[lastClosedTabStorageKey] = tab;
-  // eslint-disable-next-line no-undef
-  return browser.storage.local.set(lastClosedTabObj);
-}
+import {setLastClosedTabAsync} from './model/browser/lastClosed.js';
 
 /**
  * Queries the browser for open tabs, then shows the count on the badge
