@@ -35,3 +35,7 @@ export function runAfterDelay(milliSecondDelay) {
     window.setTimeout(resolve, milliSecondDelay);
   });
 }
+
+export function defaultFailureHandler(error) {
+  console.log("Addon failed", error);
+};

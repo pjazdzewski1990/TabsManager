@@ -3,31 +3,17 @@
 import {filterTabState} from './src/model/search.js';
 import {getLastClosedTabAsync, lastClosedTabStorageKey} from './src/model/browser/lastClosed.js';
 import {enrichTabState} from './src/model/enrichedTab.js';
-import {FirefoxTabProvider} from './src/model/browser/firefoxTabProvider.js';
-import {TabStorage} from './src/model/tabStorage.js';
-import {SameWordsTabRecommender} from './src/model/sameWordsTabRecommender.js';
-import {AsyncTranslator} from './src/model/asyncTranslator.js';
 import {listTabs, showSimilarTab} from './src/ui.js';
-import {debounce, navigateToTabId, runAfterDelay} from './src/utils.js';
+import {debounce, navigateToTabId, runAfterDelay, defaultFailureHandler} from './src/utils.js';
 import {tagTime} from './src/tagTime.js'
+import {injectServices} from './src/inject.js';
 
-function failureHandler(error) {
-    console.log("Addon failed", error);
-};
-
-const storage = new TabStorage();
-
-function buildTranslatorAsync(storage) {
-    return storage
-        .getAsync()
-        .then(tabsData => new AsyncTranslator(tabsData));
-}
-
-const tabsProvider = new FirefoxTabProvider();
-const storedTabsStateP = tabsProvider.provide();
-const tabsTranslatorP = buildTranslatorAsync(storage);
-
-const tabsRecommender = new SameWordsTabRecommender(2);
+var {
+    storedTabsStateP,
+    storage,
+    tabsTranslatorP,
+    tabsRecommender
+} = injectServices();
 
 function renderUI() {
     const stringQuery = document.getElementById("search-field").value;
@@ -39,21 +25,20 @@ function renderUI() {
         })
         .then(mostSimilarTab => showSimilarTab(mostSimilarTab))
         .then(mostSimilarTab => setSimilarNavigation(mostSimilarTab))
-        .catch(failureHandler);
+        .catch(defaultFailureHandler);
 
     const listRenderP = storedTabsStateP
         .then(tabs => tabsTranslatorP.then(tabsTranslator => enrichTabState(tabs, tabsTranslator)))
         .then(tabs => filterTabState(tabs, stringQuery))
         .then(tabs => listTabs(tabs))
         .then(tabs => setFirstLinkNavigation(tabs))
-        .catch(failureHandler);
+        .catch(defaultFailureHandler);
 
     return Promise.all([similarToLastP, listRenderP]).then(tagTime("UI-render-done"));
 };
 
 function storeUIState() {
     // save data for later after X seconds
-    // TODO: should there be an upper bound on the pages count?
     return runAfterDelay(4000)
         .then(() => tabsTranslatorP)
         .then(translator => storage.upsertAsync(translator.tabTextToLanguageMap));
