@@ -7,19 +7,12 @@ import {FirefoxTabProvider} from './src/model/browser/firefoxTabProvider.js';
 import {TabStorage} from './src/model/tabStorage.js';
 import {SameWordsTabRecommender} from './src/model/sameWordsTabRecommender.js';
 import {AsyncTranslator} from './src/model/asyncTranslator.js';
-import {clearList, listTabs, showSimilarTab} from './src/ui.js';
+import {listTabs, showSimilarTab} from './src/ui.js';
 import {debounce, navigateToTabId, runAfterDelay} from './src/utils.js';
-
-var previousTimestamp = +new Date();
-function tagTime(data) {
-    const currentTimestamp = +new Date();
-    console.log("@" + currentTimestamp + " since last timestamp: " + (currentTimestamp-previousTimestamp) + "ms");
-    previousTimestamp = currentTimestamp;
-    return data;
-}
+import {tagTime} from './src/tagTime.js'
 
 function failureHandler(error) {
-    console.log("Render failed", error);
+    console.log("Addon failed", error);
 };
 
 const storage = new TabStorage();
@@ -39,9 +32,7 @@ const tabsRecommender = new SameWordsTabRecommender(2);
 function renderUI() {
     const stringQuery = document.getElementById("search-field").value;
 
-    const _storedTabsStateP = storedTabsStateP.then(tagTime);
-
-    const similarToLastP = Promise.all([_storedTabsStateP, getLastClosedTabAsync()])
+    const similarToLastP = Promise.all([storedTabsStateP, getLastClosedTabAsync()])
         .then(tabsAndLastClosed => {
             const lastClosed = tabsAndLastClosed[1][lastClosedTabStorageKey.toString()];
             return tabsRecommender.recommend(lastClosed, tabsAndLastClosed[0]);
@@ -50,15 +41,14 @@ function renderUI() {
         .then(mostSimilarTab => setSimilarNavigation(mostSimilarTab))
         .catch(failureHandler);
 
-    const listRenderP = _storedTabsStateP
+    const listRenderP = storedTabsStateP
         .then(tabs => tabsTranslatorP.then(tabsTranslator => enrichTabState(tabs, tabsTranslator)))
         .then(tabs => filterTabState(tabs, stringQuery))
         .then(tabs => listTabs(tabs))
         .then(tabs => setFirstLinkNavigation(tabs))
-        .then(tagTime)
         .catch(failureHandler);
 
-    return Promise.all([similarToLastP, listRenderP]);
+    return Promise.all([similarToLastP, listRenderP]).then(tagTime("UI-render-done"));
 };
 
 function storeUIState() {
