@@ -50,7 +50,6 @@ function appendEmptyPlaceholder(currentTabs) {
  * @returns {Array<EnrichedTab>} Returns the input array back, without any modification
  */
 export function listTabs(tabsList, tabs) {
-  // const tabsList = document.getElementById('tabs-list');//TODO: is not pure
   // clear list
   clearList(tabsList);
   // prepare elements
@@ -78,13 +77,13 @@ export function listTabs(tabsList, tabs) {
 }
 
 /**
- * Given a single tab, updates the HTML node with id 'similar-tab' to point towards that tab
+ * Given a single tab, updates the HTML node to navigate towards the given tab
+ * @param {HTMLElement} tabsList The HTML node to be given tab information
  * @param {Array<EnrichedTab>} tabs Objects representing the tabs to be shown
  * @returns {Array<EnrichedTab>} Returns the input array back, without any modification
  */
-export function showSimilarTab(tab) {
+export function showSimilarTab(tabsElem, tab) {
   // console.log('showSimilarTab element:', tab);
-  const tabsElem = document.getElementById('similar-tab');//TODO: is not pure
   // clear list
   clearList(tabsElem);
 
