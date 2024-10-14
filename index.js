@@ -27,10 +27,12 @@ function renderUI() {
         .then(mostSimilarTab => setSimilarNavigation(mostSimilarTab))
         .catch(defaultFailureHandler);
 
+    const tabsList = document.getElementById('tabs-list')
+
     const listRenderP = storedTabsStateP
         .then(tabs => tabsTranslatorP.then(tabsTranslator => enrichTabState(tabs, tabsTranslator)))
         .then(tabs => filterTabState(tabs, stringQuery))
-        .then(tabs => listTabs(tabs))
+        .then(tabs => listTabs(tabsList, tabs))
         .then(tabs => setFirstLinkNavigation(tabs))
         .catch(defaultFailureHandler);
 

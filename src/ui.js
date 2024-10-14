@@ -44,12 +44,13 @@ function appendEmptyPlaceholder(currentTabs) {
 }
 
 /**
- * Given a list of tab objects refreshes the HTML node with id 'tabs-list'
+ * Given a list of tab objects refreshes the HTML node to show a list of tabs
+ * @param {HTMLElement} tabsList The HTML node to refresh with tab informations
  * @param {Array<EnrichedTab>} tabs Objects representing the tabs to be shown
  * @returns {Array<EnrichedTab>} Returns the input array back, without any modification
  */
-export function listTabs(tabs) {
-  const tabsList = document.getElementById('tabs-list');//TODO: is not pure
+export function listTabs(tabsList, tabs) {
+  // const tabsList = document.getElementById('tabs-list');//TODO: is not pure
   // clear list
   clearList(tabsList);
   // prepare elements
