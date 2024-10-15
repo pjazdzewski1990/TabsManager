@@ -1,6 +1,6 @@
 import {jest} from '@jest/globals';
 
-import {debounce} from '../../src/utils.js';
+import {debounce} from '../src/utils.js';
 
 test('debounce should convert mutliple calls to function into a single one', () => {
     jest.useFakeTimers();
