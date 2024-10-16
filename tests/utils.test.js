@@ -2,6 +2,11 @@ import {jest} from '@jest/globals';
 
 import {debounce} from '../src/utils.js';
 
+// per https://stackoverflow.com/questions/77694957/typeerror-cannot-assign-to-read-only-property-performance-of-object-object
+Object.defineProperty(global, 'performance', {
+  writable: true,
+});
+
 test('debounce should convert mutliple calls to function into a single one', () => {
     jest.useFakeTimers();
     const delay = 250;
