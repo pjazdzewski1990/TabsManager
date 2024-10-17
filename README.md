@@ -11,6 +11,10 @@
 ### Running 
 Run tests with: 
 
+npm test
+
+or
+
 yarn node --experimental-vm-modules $(yarn bin jest)
 
 Run linter with:
