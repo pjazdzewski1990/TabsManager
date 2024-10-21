@@ -12,7 +12,8 @@ export function clearList(listElem) {
 
 /**
  * Builds an Html <img> tag to represent the language code provided
- * @param {String} languageCode ISO language code to be used (say: en, pl, fr) or 'later' (if identification is in progress) or 'unknown' (if identification process failed)
+ * @param {String} languageCode ISO language code to be used (say: en, pl, fr) or 'later'
+ * (if identification is in progress) or 'unknown' (if identification process failed)
  * @returns {HTMLElement} Img tag representing a language code
  */
 function createLanguageIconHtml(languageCode) {
@@ -35,7 +36,7 @@ function createLanguageIconHtml(languageCode) {
 
 /**
  * Given the html tab list element, appends a placeholder value
- * @param {HTMLElement} currentTabs Parent element to which 
+ * @param {HTMLElement} currentTabs Parent element to which
  */
 function appendEmptyPlaceholder(currentTabs) {
   const newListElem = document.createElement('li');

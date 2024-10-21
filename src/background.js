@@ -1,4 +1,5 @@
-import {setLastClosedTabAsync} from './model/browser/lastClosed.js';
+/* eslint-disable import/extensions */
+import { setLastClosedTabAsync } from './model/browser/lastClosed.js';
 
 /**
  * Queries the browser for open tabs, then shows the count on the badge
@@ -40,7 +41,6 @@ browser.tabs.onRemoved.addListener((tabId) => {
   // so we can retrieve it later and in other parts of the app
   // FF doesn't make it particularly easy - we need to access the storage to get it out
   // eslint-disable-next-line no-undef
-  //TODO: dould we use the provider?
   const saveP = browser.tabs.query({ currentWindow: true })
     .then((tabs) => {
       const beingClosed = tabs.filter((tab) => tab.id === tabId);

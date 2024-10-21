@@ -3,7 +3,7 @@
 /**
  * Pause execution for "wait" millis, then execute callback
  * when called N times will trigger just once after the last wait period
- * @param {Function} callback Code to run after the wait timeout 
+ * @param {Function} callback Code to run after the wait timeout
  * @param {number} wait How long should we wait before running the callback
  * @returns {Function} Handler to run the callback with the debounce semantics
  */
@@ -37,5 +37,5 @@ export function runAfterDelay(milliSecondDelay) {
 }
 
 export function defaultFailureHandler(error) {
-  console.log("Addon failed", error);
-};
+  console.log('Addon failed', error);
+}
