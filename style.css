@@ -12,6 +12,13 @@ html, body {
 
 #tabs-list {
     list-style-type: none;
+    margin-left: -35px;
+    margin-right: 5px;
+}
+
+.switch-tabs {
+  margin-left: 5px;
+  margin-bottom: 10px;
 }
 
 .lang-icon {
