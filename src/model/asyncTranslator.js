@@ -1,4 +1,3 @@
-//TODO: handle warning
 import {FirefoxI18N} from './browser/firefoxI18N.js';
 
 export class AsyncTranslator {

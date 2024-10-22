@@ -37,4 +37,4 @@ test('SameWordsTabRecommender(wordThreshold=2) finds similar tabs based on simil
     expect(recommenderFor2.recommend({title: "Tokyo Chicago"}, tabsUnderTest).title).toEqual("Athens London Tokyo Chicago");
 });
 
-//TODO: find a way to test FF APIs as mocking everything is not viable in the the long run
+//TODO: find a way to test FF APIs as mocking everything won't be viable in the the long run
