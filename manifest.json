@@ -13,8 +13,8 @@
     "default_title": "tabs-manager",
     "default_popup": "index.html"
   },
-  "description": "",
-  "homepage_url": "https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/Your_second_WebExtension",
+  "description": "Simple Tab Manager ",
+  "homepage_url": "https://github.com/pjazdzewski1990/TabsManager",
   "icons": {
     "48": "icons/icon-48.png"
   },
