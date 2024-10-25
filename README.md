@@ -11,6 +11,10 @@ A simple Firefox addon to help with my reading/watching workflow
 - aggregate tabs by content [TODO]
 
 ### Running 
+First install the dependencies with
+
+yarn
+
 Run tests with: 
 
 npm test
