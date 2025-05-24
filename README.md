@@ -7,8 +7,6 @@ A simple Firefox addon to help with my reading/watching workflow
 - tab counter
 - identify the language
 - find similar to this tab [Basic]
-- identify the topic [TODO]
-- aggregate tabs by content [TODO]
 
 ### Running 
 First install the dependencies with
@@ -28,8 +26,6 @@ Run linter with:
 yarn run eslint --fix src
 
 ### Tested on
-
-Mac 12.x.x
 
 Firefox 131.0.x
 
