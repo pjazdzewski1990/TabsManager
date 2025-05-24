@@ -11,6 +11,13 @@ export class SameWordsTabRecommender {
     return safeString.trim().split(/[^A-Za-z]/).filter((it) => it.length > 3).map((it) => it.toLowerCase());
   }
 
+  // eslint-disable-next-line class-methods-use-this
+  #tabToPhraseList(tab) {
+    const fromTitle = this.#normalizeString(tab.title);
+    const fromUrl = this.#normalizeString(tab.url);
+    return fromTitle.concat(fromUrl);
+  }
+
   /**
    * From the given tabs selects one that is most similar to the one given
    * @param {EnrichedTab} similarTo Search for a tab silimar to this one
@@ -23,7 +30,7 @@ export class SameWordsTabRecommender {
     if (similarTo) {
       const similarToWords = this.#normalizeString(similarTo.title);
       const similar = all.find((tab) => {
-        const tabWords = this.#normalizeString(tab.title);
+        const tabWords = this.#tabToPhraseList(tab);
         const overlap = similarToWords.filter((val) => tabWords.indexOf(val) !== -1);
         // console.log(`${similarTo.title} <==> ${tab.title}`, overlap);
         // end if we found enough words
