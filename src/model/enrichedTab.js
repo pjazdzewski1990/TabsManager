@@ -21,7 +21,7 @@ class EnrichedTab {
 
 /**
  * Enriches raw tab information with:
- * - language uses 
+ * - language uses
  * @param {array<>} tabs List of tab information
  * @param {AsyncTranslator} translator Service to use for language detection
  * @returns {Array<EnrichedTab>} Input array converted to EnrichedTab

@@ -19,14 +19,28 @@ export class SameWordsTabRecommender {
   }
 
   /**
+   * Since recommendation did fail, we will pick a tab at random
+   * @param {Array<EnrichedTab>} all Search among this list of tabs
+   * @returns Random tab
+   */
+  // eslint-disable-next-line class-methods-use-this
+  #recommendFailsafe(all) {
+    const ind = Math.floor(Math.random() * all.length);
+    const result = all[ind];
+    console.log('Recommending random tab', result);
+    return result;
+  }
+
+  /**
    * From the given tabs selects one that is most similar to the one given
    * @param {EnrichedTab} similarTo Search for a tab similar to this one
    * @param {Array<EnrichedTab>} all Search among this list of tabs
-   * @returns First tab from the list that is similar enough to the given one, or the first one if nothing fits
+   * @returns First tab from the list that is similar enough to the given one
    */
   recommend(similarTo, all) {
     // console.log('recommend(similarTo, all)', similarTo);
     // console.log('recommend(similarTo, all)', all);
+    console.log('Recommending similar to', similarTo);
     if (similarTo) {
       const similarToWords = this.#normalizeString(similarTo.title);
       const similar = all.find((tab) => {
@@ -36,9 +50,12 @@ export class SameWordsTabRecommender {
         // end if we found enough words
         return overlap.length >= this.wordThreshold;
       });
-      return similar || all[0];
+      console.log('Recommending similar', similar);
+      if (similar) {
+        return similar;
+      }
     }
-    // return something if undefined or there's no match
-    return all[0];
+    // return tab at random if undefined or there's no match
+    return this.#recommendFailsafe(all);
   }
 }

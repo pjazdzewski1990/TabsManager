@@ -1,4 +1,4 @@
-import {FirefoxBrowserStorage} from './browser/browserStorage.js';
+import { FirefoxBrowserStorage } from './browser/browserStorage.js';
 
 export class TabStorage {
   fetchAllTabTranslations = 'all-tab-translations';
@@ -9,7 +9,7 @@ export class TabStorage {
     this.storage = storage || new FirefoxBrowserStorage();
   }
 
- /**
+  /**
   * Returns a Map from of tab titles to language codes, wrapped in a Promise
   * @returns {Promise<Map>} The stored, last closed, tab information
   */
@@ -18,16 +18,15 @@ export class TabStorage {
     return this.storage
       .read(this.fetchAllTabTranslations)
       .then((storedState) => {
-        if(!storedState || !storedState[this.fetchAllTabTranslations]) {
+        if (!storedState || !storedState[this.fetchAllTabTranslations]) {
           console.log('Returning empty translation list');
           return new Map();
-        } else { 
-          const storedTabs = storedState[this.fetchAllTabTranslations];
-          console.log('Reading tabs information #' + storedTabs.size, storedTabs.entries().next().value);
-          return storedTabs;
         }
+        const storedTabs = storedState[this.fetchAllTabTranslations];
+        console.log(`Reading tabs information #${storedTabs.size}`, storedTabs.entries().next().value);
+        return storedTabs;
       })
-      .catch(error => {
+      .catch((error) => {
         console.log('Tab read failed', error);
         // in case of a failure to access the storage we will just save the data later
         return new Map();
@@ -36,19 +35,19 @@ export class TabStorage {
 
   /**
    * Wrap the captured data into an object for storage
-   * @param {Map} capturedState 
+   * @param {Map} capturedState
    * @returns {Object} The stored state is returned back
    */
   #prepareStorageObject(capturedState) {
     const mergedState = new Map([...capturedState]);
     const wrapperForStorage = {};
     wrapperForStorage[this.fetchAllTabTranslations] = mergedState;
-    console.log('Upserting tabs information #' + mergedState.size, mergedState.entries().next().value);
+    console.log(`Upserting tabs information #${mergedState.size}`, mergedState.entries().next().value);
 
     return wrapperForStorage;
   }
 
-/**
+  /**
   * Given the current state, merges it with the old data and updates the storage
   * @param {Array<EnrichedTab>} capturedState Previous known state
   * @returns {Promise} Handler that completes or failes with the update process

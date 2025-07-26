@@ -4,7 +4,7 @@
  * @returns Normalized value that can be reliably used in search
  */
 function normalizeStringForSearch(str) {
-    return str.toLowerCase().trim();
+  return str.toLowerCase().trim();
 }
 
 /**

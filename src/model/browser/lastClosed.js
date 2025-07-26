@@ -15,7 +15,7 @@ export function getLastClosedTabAsync() {
  */
 export function setLastClosedTabAsync(tab) {
   const lastClosedTabObj = {};
-  console.log("lastClosedTabStorageKey", lastClosedTabStorageKey);
+  console.log('lastClosedTabStorageKey', lastClosedTabStorageKey);
   lastClosedTabObj[lastClosedTabStorageKey] = tab;
   // eslint-disable-next-line no-undef
   return browser.storage.local.set(lastClosedTabObj);

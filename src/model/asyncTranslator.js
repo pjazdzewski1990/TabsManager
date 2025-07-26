@@ -1,7 +1,6 @@
-import {FirefoxI18N} from './browser/firefoxI18N.js';
+import { FirefoxI18N } from './browser/firefoxI18N.js';
 
 export class AsyncTranslator {
-  
   constructor(storedState, i18N) {
     // stores an title -> language code map
     this.tabTextToLanguageMap = storedState;
@@ -20,7 +19,7 @@ export class AsyncTranslator {
     }
   }
 
-/**
+  /**
   * Given text, immediately returns:
   * - a language code for known texts, say: "Hello World" => "en"
   * - "UNKNOWN" if we cannot detect the language
@@ -33,7 +32,7 @@ export class AsyncTranslator {
     if (this.tabTextToLanguageMap.has(textToDetectLanguageFrom)) {
       return this.tabTextToLanguageMap.get(textToDetectLanguageFrom);
     }
-  
+
     this.i81n.detectLanguage(textToDetectLanguageFrom)
       .then((detectionObject) => this.#updateTextToLanguageMap(textToDetectLanguageFrom, detectionObject));
     // return message for now
