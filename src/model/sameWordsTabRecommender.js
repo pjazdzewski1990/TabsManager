@@ -20,7 +20,7 @@ export class SameWordsTabRecommender {
 
   /**
    * From the given tabs selects one that is most similar to the one given
-   * @param {EnrichedTab} similarTo Search for a tab silimar to this one
+   * @param {EnrichedTab} similarTo Search for a tab similar to this one
    * @param {Array<EnrichedTab>} all Search among this list of tabs
    * @returns First tab from the list that is similar enough to the given one, or the first one if nothing fits
    */

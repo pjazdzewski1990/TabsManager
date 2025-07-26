@@ -1,5 +1,5 @@
 /**
- * Given a string input alignes the case and spaces
+ * Given a string input aligns the case and spaces
  * @param {String} str String to normalize
  * @returns Normalized value that can be reliably used in search
  */
@@ -8,9 +8,9 @@ function normalizeStringForSearch(str) {
 }
 
 /**
- * Turns the provided EnrichedTab into a searcheable string
+ * Turns the provided EnrichedTab into a searchable string
  * @param {EnrichedTab} tab Tab info to be converted
- * @returns {string} A consistent, searcheable string
+ * @returns {string} A consistent, searchable string
  */
 function tabToSearchString(tab) {
   return (`${tab.title} l:${normalizeStringForSearch(tab.languageCode)}`).toLowerCase();
