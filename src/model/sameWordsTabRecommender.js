@@ -25,10 +25,12 @@ export class SameWordsTabRecommender {
    */
   // eslint-disable-next-line class-methods-use-this
   #recommendFailsafe(all) {
-    const ind = Math.floor(Math.random() * all.length);
+    const now = new Date();
+    const factor = (100 * now.getHours()) + now.getMinutes();
+    const ind = factor % all.length;
     const result = all[ind];
     console.log('Recommending random tab', result);
-    return result;
+    return {'tab': result, 'why': 'random'};
   }
 
   /**
@@ -52,7 +54,7 @@ export class SameWordsTabRecommender {
       });
       console.log('Recommending similar', similar);
       if (similar) {
-        return similar;
+        return {'tab': similar, 'why': 'similar'};
       }
     }
     // return tab at random if undefined or there's no match

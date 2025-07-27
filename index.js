@@ -18,13 +18,14 @@ var {
 function renderUI() {
     const stringQuery = document.getElementById("search-field").value;
     const tabsElem = document.getElementById('similar-tab');
+    const tabsLabelElem = document.getElementById('similar-tab-label');
 
     const similarToLastP = Promise.all([storedTabsStateP, getLastClosedTabAsync()])
         .then(tabsAndLastClosed => {
             const lastClosed = tabsAndLastClosed[1][lastClosedTabStorageKey.toString()];
             return tabsRecommender.recommend(lastClosed, tabsAndLastClosed[0]);
         })
-        .then(mostSimilarTab => showSimilarTab(tabsElem, mostSimilarTab))
+        .then(mostSimilarTabObj => showSimilarTab(tabsElem, tabsLabelElem, mostSimilarTabObj))
         .then(mostSimilarTab => setSimilarNavigation(mostSimilarTab))
         .catch(defaultFailureHandler);
 

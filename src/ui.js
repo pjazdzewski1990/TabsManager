@@ -80,20 +80,29 @@ export function listTabs(tabsList, tabs) {
 /**
  * Given a single tab, updates the HTML node to navigate towards the given tab
  * @param {HTMLElement} tabsList The HTML node to be given tab information
- * @param {Array<EnrichedTab>} tabs Objects representing the tabs to be shown
- * @returns {Array<EnrichedTab>} Returns the input array back, without any modification
+ * @param {HTMLElement} tabsLabelList The HTML node to hold the label of the element
+ * @param {Object} tab Object that holds EnrichedTab under "tab" key and 'random'/'similar' under "why" key
+ * @returns {EnrichedTab} Returns the given tab, without any modification
  */
-export function showSimilarTab(tabsElem, tab) {
+export function showSimilarTab(tabsElem, tabsLabelElem, tabObj) {
   // console.log('showSimilarTab element:', tab);
   // clear list
   clearList(tabsElem);
 
   const tabLink = document.createElement('a');
-  tabLink.textContent = (`#${tab.id} ${tab.title}`);
-  tabLink.setAttribute('href', tab.id);
+  tabLink.textContent = (`#${tabObj.tab.id} ${tabObj.tab.title}`);
+  tabLink.setAttribute('href', tabObj.tab.id);
   tabLink.classList.add('switch-tabs');
 
   // fill list
   tabsElem.appendChild(tabLink);
-  return tab;
+
+  // add label
+  if (tabObj.why == 'random') {
+    tabsLabelElem.textContent = 'Hint';
+  } else {
+    tabsLabelElem.textContent = 'Similar';
+  }
+
+  return tab.tab;
 }

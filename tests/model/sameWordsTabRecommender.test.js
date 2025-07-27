@@ -15,15 +15,15 @@ test('SameWordsTabRecommender(wordThreshold=1) finds similar tabs based on simil
     //and recommender
     const recommenderFor1 = new SameWordsTabRecommender(1);
     //when we recommend we should get a similar tab
-    expect(recommenderFor1.recommend({title: "Tokyo"}, tabsUnderTest).title).toEqual("Athens London Tokyo Chicago");
+    expect(recommenderFor1.recommend({title: "Tokyo"}, tabsUnderTest).tab.title).toEqual("Athens London Tokyo Chicago");
     // ignore case
-    expect(recommenderFor1.recommend({title: "London"}, tabsUnderTest).title).toEqual("LONDON");
+    expect(recommenderFor1.recommend({title: "London"}, tabsUnderTest).tab.title).toEqual("LONDON");
     // return random element if nothing is found
-    expect(allTitles).toContain(recommenderFor1.recommend({title: "Cairo"}, tabsUnderTest).title);
+    expect(allTitles).toContain(recommenderFor1.recommend({title: "Cairo"}, tabsUnderTest).tab.title);
     // return random element if no reference is provided
-    expect(allTitles).toContain(recommenderFor1.recommend(undefined, tabsUnderTest).title);
+    expect(allTitles).toContain(recommenderFor1.recommend(undefined, tabsUnderTest).tab.title);
     // return nothing if no data is provided
-    expect(recommenderFor1.recommend({title: "Cairo"}, [])).toEqual(undefined);
+    expect(recommenderFor1.recommend({title: "Cairo"}, []).tab).toEqual(undefined);
 });
 
 test('SameWordsTabRecommender(wordThreshold=2) finds similar tabs based on similarity of titles', () => {
@@ -31,11 +31,11 @@ test('SameWordsTabRecommender(wordThreshold=2) finds similar tabs based on simil
     //and recommender
     const recommenderFor2 = new SameWordsTabRecommender(2);
     //when we recommend we should get 1 elem as the query is too short - we return the random
-    expect(allTitles).toContain(recommenderFor2.recommend({title: "London"}, tabsUnderTest).title);
+    expect(allTitles).toContain(recommenderFor2.recommend({title: "London"}, tabsUnderTest).tab.title);
     //when we recommend we should get first tab that matches at least 2 words
-    expect(recommenderFor2.recommend({title: "Chicago Tokyo"}, tabsUnderTest).title).toEqual("Athens London Tokyo Chicago");
+    expect(recommenderFor2.recommend({title: "Chicago Tokyo"}, tabsUnderTest).tab.title).toEqual("Athens London Tokyo Chicago");
     //when we recommend we should get first tab that matches at least 2 words - order doesn't matter
-    expect(recommenderFor2.recommend({title: "Tokyo Chicago"}, tabsUnderTest).title).toEqual("Athens London Tokyo Chicago");
+    expect(recommenderFor2.recommend({title: "Tokyo Chicago"}, tabsUnderTest).tab.title).toEqual("Athens London Tokyo Chicago");
 });
 
 //TODO: find a way to test FF APIs as mocking everything won't be viable in the the long run
