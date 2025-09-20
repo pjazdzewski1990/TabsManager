@@ -30,7 +30,7 @@ export class SameWordsTabRecommender {
     const ind = factor % all.length;
     const result = all[ind];
     console.log('Recommending random tab', result);
-    return {'tab': result, 'why': 'random'};
+    return { tab: result, why: 'random' };
   }
 
   /**
@@ -40,21 +40,22 @@ export class SameWordsTabRecommender {
    * @returns First tab from the list that is similar enough to the given one
    */
   recommend(similarTo, all) {
-    // console.log('recommend(similarTo, all)', similarTo);
-    // console.log('recommend(similarTo, all)', all);
-    console.log('Recommending similar to', similarTo);
     if (similarTo) {
-      const similarToWords = this.#normalizeString(similarTo.title);
+      const similarToTitleKeywords = this.#normalizeString(similarTo.title);
+      const similarToUrlKeywords = this.#normalizeString(similarTo.url);
+      const similarToKeywords = [...new Set(similarToTitleKeywords.concat(similarToUrlKeywords))];
+      console.log('Searching similar to', similarToKeywords);
+
       const similar = all.find((tab) => {
         const tabWords = this.#tabToPhraseList(tab);
-        const overlap = similarToWords.filter((val) => tabWords.indexOf(val) !== -1);
+        const overlap = similarToKeywords.filter((val) => tabWords.indexOf(val) !== -1);
         // console.log(`${similarTo.title} <==> ${tab.title}`, overlap);
         // end if we found enough words
         return overlap.length >= this.wordThreshold;
       });
-      console.log('Recommending similar', similar);
+      console.log('Found similar', similar);
       if (similar) {
-        return {'tab': similar, 'why': 'similar'};
+        return { tab: similar, why: 'similar' };
       }
     }
     // return tab at random if undefined or there's no match

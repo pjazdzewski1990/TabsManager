@@ -85,7 +85,7 @@ export function listTabs(tabsList, tabs) {
  * @returns {EnrichedTab} Returns the given tab, without any modification
  */
 export function showSimilarTab(tabsElem, tabsLabelElem, tabObj) {
-  // console.log('showSimilarTab element:', tab);
+  // console.log('showSimilarTab element:', tabObj);
   // clear list
   clearList(tabsElem);
 
@@ -98,11 +98,11 @@ export function showSimilarTab(tabsElem, tabsLabelElem, tabObj) {
   tabsElem.appendChild(tabLink);
 
   // add label
-  if (tabObj.why == 'random') {
+  if (tabObj.why === 'random') {
     tabsLabelElem.textContent = 'Hint';
   } else {
     tabsLabelElem.textContent = 'Similar';
   }
 
-  return tab.tab;
+  return tabObj.tab;
 }
