@@ -13,7 +13,7 @@ function normalizeStringForSearch(str) {
  * @returns {string} A consistent, searchable string
  */
 function tabToSearchString(tab) {
-  return (`${tab.title} l:${normalizeStringForSearch(tab.languageCode)}`).toLowerCase();
+  return (`${tab.title} ${tab.url} l:${normalizeStringForSearch(tab.languageCode)}`).toLowerCase();
 }
 
 /**
