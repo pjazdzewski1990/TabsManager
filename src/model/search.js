@@ -1,3 +1,5 @@
+import {urlToShortUrl} from '../../src/utils.js';
+
 /**
  * Given a string input aligns the case and spaces
  * @param {String} str String to normalize
@@ -13,7 +15,7 @@ function normalizeStringForSearch(str) {
  * @returns {string} A consistent, searchable string
  */
 function tabToSearchString(tab) {
-  return (`${tab.title} ${tab.url} l:${normalizeStringForSearch(tab.languageCode)}`).toLowerCase();
+  return (`${tab.title} ${urlToShortUrl(tab.url)} l:${normalizeStringForSearch(tab.languageCode)}`).toLowerCase();
 }
 
 /**

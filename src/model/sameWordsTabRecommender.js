@@ -1,3 +1,5 @@
+import {urlToShortUrl} from '../../src/utils.js';
+
 // this impl prefers simple, fast heuristic:
 // go over the meaningful words and pick the one that has at least "wordThreshold" same words
 export class SameWordsTabRecommender {
@@ -8,7 +10,11 @@ export class SameWordsTabRecommender {
   // eslint-disable-next-line class-methods-use-this
   #normalizeString(str) {
     const safeString = str || '';
-    return safeString.trim().split(/[^A-Za-z]/).filter((it) => it.length > 3).map((it) => it.toLowerCase());
+    return safeString
+      .trim()
+      .split(/[^A-Za-z]/)
+      .filter((it) => it.length > 3)
+      .map((it) => it.toLowerCase());
   }
 
   // eslint-disable-next-line class-methods-use-this
@@ -42,7 +48,8 @@ export class SameWordsTabRecommender {
   recommend(similarTo, all) {
     if (similarTo) {
       const similarToTitleKeywords = this.#normalizeString(similarTo.title);
-      const similarToUrlKeywords = this.#normalizeString(similarTo.url);
+      console.log('similarTo=', similarTo);
+      const similarToUrlKeywords = this.#normalizeString(urlToShortUrl(similarTo.url));
       const similarToKeywords = [...new Set(similarToTitleKeywords.concat(similarToUrlKeywords))];
       console.log('Searching similar to', similarToKeywords);
 

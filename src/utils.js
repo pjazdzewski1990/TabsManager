@@ -39,3 +39,7 @@ export function runAfterDelay(milliSecondDelay) {
 export function defaultFailureHandler(error) {
   console.log('Addon failed', error);
 }
+
+export function urlToShortUrl(url) {
+  return (url || "").replace("http://", "").replace("https://", "");
+}
